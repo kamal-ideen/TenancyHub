@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify a receipt — TenancyHub</title>
+<script src="theme.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="auth-shell" style="min-height:100vh; display:flex; align-items:center; justify-content:center;">
+  <div class="auth-card" style="max-width:420px; width:100%; margin:24px;">
+    <div class="auth-brand">
+      <span class="brand-mark">TH</span>
+      <span class="brand-name" style="font-weight:700; font-size:18px; color: var(--navy);">TenancyHub</span>
+    </div>
+    <p class="auth-tagline">Receipt verification</p>
+
+    <div id="verifyResult" style="margin-top:20px;">
+      <p class="section-hint">Checking…</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(async function () {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+  const el = document.getElementById("verifyResult");
+
+  function escapeHtml(str) {
+    const div = document.createElement("div");
+    div.textContent = str == null ? "" : String(str);
+    return div.innerHTML;
+  }
+
+  if (!id) {
+    el.innerHTML = '<p class="section-hint">No receipt reference given — scan the QR code on the receipt itself, or check the link.</p>';
+    return;
+  }
+
+  try {
+    const res = await fetch("/api/receipt-verify/" + encodeURIComponent(id));
+    const data = await res.json();
+
+    if (!data.valid) {
+      el.innerHTML = `
+        <div style="display:flex; align-items:center; gap:10px; color: var(--red); font-weight:700; margin-bottom:8px;">
+          <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5l14 14M19 5L5 19"/></svg>
+          Not found
+        </div>
+        <p class="section-hint">This receipt reference doesn't match anything in TenancyHub. It may be invalid, or the link may be broken.</p>
+      `;
+      return;
+    }
+
+    const dateLabel = new Date(data.date).toLocaleDateString("en-NG", { day: "numeric", month: "long", year: "numeric" });
+    el.innerHTML = `
+      <div style="display:flex; align-items:center; gap:10px; color: var(--green); font-weight:700; margin-bottom:14px;">
+        <svg class="icon-lg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg>
+        Genuine TenancyHub receipt
+      </div>
+      <div class="account-card" style="padding:14px;">
+        <div style="font-size:13px; color:var(--ink-soft); margin-bottom:2px;">Receipt number</div>
+        <div style="font-weight:700; margin-bottom:12px;">${escapeHtml(data.receiptNumber)}</div>
+        <div style="font-size:13px; color:var(--ink-soft); margin-bottom:2px;">Amount</div>
+        <div style="font-weight:700; margin-bottom:12px;">₦${Number(data.amount).toLocaleString("en-NG")}</div>
+        <div style="font-size:13px; color:var(--ink-soft); margin-bottom:2px;">Date paid</div>
+        <div style="font-weight:700; margin-bottom:12px;">${escapeHtml(dateLabel)}</div>
+        ${data.propertyName ? `<div style="font-size:13px; color:var(--ink-soft); margin-bottom:2px;">Property</div><div style="font-weight:700; margin-bottom:12px;">${escapeHtml(data.propertyName)}</div>` : ""}
+        ${data.landlordName ? `<div style="font-size:13px; color:var(--ink-soft); margin-bottom:2px;">Issued by</div><div style="font-weight:700;">${escapeHtml(data.landlordName)}</div>` : ""}
+      </div>
+      <p class="section-hint" style="margin-top:12px;">This confirms a payment record exists in TenancyHub matching this receipt. It is not a legal document.</p>
+    `;
+  } catch (err) {
+    el.innerHTML = '<p class="section-hint">Couldn\'t check this receipt right now — check your connection and try again.</p>';
+  }
+})();
+</script>
+</body>
+</html>

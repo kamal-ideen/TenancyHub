@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — TenancyHub</title>
+<script src="theme.js"></script>
+<link rel="stylesheet" href="style.css">
+<script src="csrf.js"></script>
+<script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+<div class="auth-shell">
+  <div class="auth-visual">
+    <h1>TenancyHub</h1>
+    <p>Create your account and bring your properties, tenants, and rent tracking into one place.</p>
+    <ul>
+      <li><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span> Free to use, built for Nigeria first</li>
+      <li><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span> Yearly or monthly rent, your choice</li>
+      <li><span class="check"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12l5 5L20 6"/></svg></span> Your data stays on your own computer</li>
+    </ul>
+  </div>
+
+  <div class="auth-form-side">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <span class="brand-mark">TH</span>
+        <span class="brand-name" style="font-weight:700; font-size:18px; color: var(--navy);">TenancyHub</span>
+      </div>
+      <p class="auth-tagline">Create your account to get started.</p>
+
+      <div class="auth-steps">
+        <div class="auth-step active"><span class="dot">1</span> Account</div>
+        <div class="auth-step-line"></div>
+        <div class="auth-step"><span class="dot">2</span> Verify</div>
+      </div>
+
+      <p class="auth-error" id="authError" hidden></p>
+
+      <form id="registerForm">
+        <label>
+          Full name
+          <input type="text" name="name" required>
+        </label>
+        <label>
+          Email
+          <input type="email" name="email" required>
+        </label>
+        <label>
+          WhatsApp number <span style="font-weight:400; color:var(--ink-soft);">(optional — for WhatsApp reminders and codes)</span>
+          <input type="tel" name="phone" placeholder="e.g. 08012345678">
+        </label>
+        <label>
+          Password
+          <div class="password-field-wrap">
+            <input type="password" name="password" id="registerPassword" minlength="6" required>
+            <button type="button" class="password-toggle" data-toggle-for="registerPassword">Show</button>
+          </div>
+        </label>
+        <label>
+          I am a...
+          <select name="role" id="roleSelect">
+            <option value="landlord">Landlord</option>
+            <option value="tenant">Tenant</option>
+            <option value="property_manager">Property Manager</option>
+          </select>
+        </label>
+        <button type="submit" class="btn btn-primary">Create account</button>
+      </form>
+
+      <div class="auth-divider">or</div>
+      <div id="googleSignInContainer"></div>
+
+      <p class="auth-switch">Already have an account? <a href="login.html">Log in</a></p>
+    </div>
+  </div>
+</div>
+<script src="auth.js"></script>
+</body>
+</html>

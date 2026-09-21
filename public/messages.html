@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TenancyHub — Messages Portal</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+
+  <style> 
+  /* Force the right chat panel to expand and fill the remaining workspace */
+    main.main-workspace .chat-panel,
+    main.main-workspace .chat-window {
+      flex: 1 1 0% !important;
+      min-width: 0 !important;
+      width: 100% !important;
+    }
+
+  /* Fix chat bubble text wrapping and width */
+    .msg-bubble, .message-bubble {
+      max-width: 70% !important;
+      word-wrap: break-word !important;
+      word-break: break-word !important;
+      white-space: pre-wrap !important;
+      display: inline-block !important;
+    }
+
+    .msg-group {
+      display: flex !important;
+      flex-direction: column !important;
+      width: 100% !important;
+    }
+
+  main.main-workspace {
+  flex: 1 !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  margin-left: 0 !important;
+  padding: 24px !important;
+  display: flex !important;
+  gap: 24px !important;
+  height: calc(100vh - 48px) !important;
+  align-items: stretch !important;
+  box-sizing: border-box !important;
+  background-color: #f8fafc !important;
+}
+
+    main.main-workspace .conversations-panel {
+      width: 340px !important;
+      min-width: 340px !important;
+      max-width: 340px !important;
+      display: flex !important;
+      flex-direction: column !important;
+      height: 100% !important;
+      border-radius: 16px !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+      border: 1px solid #e2e8f0 !important;
+      background: #ffffff !important;
+      overflow: hidden !important;
+      box-sizing: border-box !important;
+    }
+
+    main.main-workspace .conversations-list {
+      flex: 1 !important;
+      overflow-y: auto !important;
+    }
+
+    main.main-workspace .chat-panel,
+    main.main-workspace .chat-window {
+      flex: 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      height: 100% !important;
+      border-radius: 16px !important;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+      border: 1px solid #e2e8f0 !important;
+      background: #ffffff !important;
+      overflow: hidden !important;
+    }
+
+    /* Dashboard spacing alignment */
+body.has-sidebar {
+  background-color: #f1f5f9 !important;
+}
+
+.chat-layout,
+.app-container,
+.main-content {
+  margin-left: 260px !important;
+  padding: 24px !important;
+  height: 100vh !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  gap: 20px !important;
+}
+
+.conversations-sidebar,
+.chat-window {
+  border-radius: 16px !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05) !important;
+  border: 1px solid #e2e8f0 !important;
+  overflow: hidden !important;
+}
+
+/* Ensure content body doesn't sit behind the 260px fixed bar */
+body {
+  margin-left: 260px !important;
+}
+
+    /* Exact button styles from index.html */
+.theme-toggle-btn {
+  background: #14233c !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 8px 14px !important;
+  width: 100% !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  margin-bottom: 8px !important;
+  box-sizing: border-box !important;
+}
+
+.theme-toggle-btn svg {
+  stroke: #cbd5e1 !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.logout-btn {
+  background: #14233c !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 8px 14px !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+}
+
+.logout-btn svg {
+  stroke: #cbd5e1 !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+/* Fix chat panel offset so it does not hide behind the sidebar */
+.chat-layout,
+.app-layout,
+.messages-container {
+  margin-left: 240px !important;
+}
+
+    /* Sidebar Icon Sizing & Layout Fixes */
+.sidebar svg,
+.sidebar-footer svg,
+.theme-toggle-btn svg,
+.logout-btn svg {
+  width: 18px !important;
+  height: 18px !important;
+  min-width: 18px !important;
+  min-height: 18px !important;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.sidebar {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  overflow-y: hidden !important;
+}
+
+.theme-toggle-btn,
+.logout-btn {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 12px !important;
+  font-size: 14px !important;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+.sidebar-footer {
+  margin-top: auto !important;
+  padding: 16px !important;
+}
+    :root {
+      --sidebar-bg: #0d1e3a;
+      --sidebar-hover: #152d56;
+      --sidebar-active: #1d4ed8;
+      --primary: #1d4ed8;
+      --primary-hover: #1e40af;
+      --bg-light: #f1f5f9;
+      --card-bg: #ffffff;
+      --toolbar-bg: #fafafa;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --chat-bubble-user: #1d4ed8;
+      --chat-bubble-other: #f8fafc;
+      --danger: #ef4444;
+      --danger-bg: #fee2e2;
+      --pin-gold: #f59e0b;
+      --success: #10b981;
+      --success-bg: #d1fae5;
+      --warning: #f59e0b;
+      --warning-bg: #fef3c7;
+      --input-bg: #f8fafc;
+      --date-badge-bg: #e2e8f0;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background-color: var(--bg-light); height: 100vh; display: flex; overflow: hidden; color: var(--text-main); }
+
+    /* SIDEBAR */
+    .app-sidebar { width: 260px; background-color: var(--sidebar-bg); color: #fff; display: flex; flex-direction: column; justify-content: space-between; flex-shrink: 0; padding: 24px 16px; }
+    .brand { display: flex; align-items: center; gap: 12px; font-size: 1.15rem; font-weight: 700; margin-bottom: 20px; padding: 0 8px; }
+    .brand-logo { background: #2563eb; width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; font-weight: 800; }
+    
+    .role-switcher-box { background: rgba(255, 255, 255, 0.08); border-radius: 8px; padding: 10px; margin-bottom: 20px; }
+    .role-switcher-box label { display: block; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.5px; color: #94a3b8; margin-bottom: 6px; }
+    .role-select { width: 100%; background: #152d56; border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 6px 10px; border-radius: 6px; font-size: 0.85rem; outline: none; cursor: pointer; }
+
+    .nav-links { display: flex; flex-direction: column; gap: 6px; list-style: none; }
+    .nav-item a { display: flex; align-items: center; gap: 12px; padding: 10px 14px; color: #94a3b8; text-decoration: none; border-radius: 8px; font-size: 0.92rem; font-weight: 500; transition: all 0.2s ease; }
+    .nav-item a:hover { background: var(--sidebar-hover); color: #fff; }
+    .nav-item.active a { background: var(--sidebar-active); color: #fff; }
+
+    .sidebar-footer { border-top: 1px solid rgba(255, 255, 255, 0.08); padding-top: 16px; display: flex; flex-direction: column; gap: 10px; }
+    .user-profile-tag { font-size: 0.82rem; color: #cbd5e1; font-weight: 600; padding: 0 4px; display: flex; align-items: center; gap: 6px; }
+    .sidebar-btn { width: 100%; background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); color: #e2e8f0; padding: 9px; border-radius: 8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
+
+    /* WORKSPACE */
+    .main-workspace { flex: 1; display: flex; padding: 16px; gap: 16px; height: 100vh; overflow: hidden; }
+
+    /* CONVERSATION LIST */
+    .conversations-panel { width: 330px; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; flex-shrink: 0; overflow: hidden; }
+    .conv-header { padding: 16px; border-bottom: 1px solid var(--border-color); display: flex; flex-direction: column; gap: 12px; }
+    .conv-tabs { display: flex; gap: 8px; }
+    .tab-pill { background: var(--input-bg); border: 1px solid var(--border-color); padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; gap: 6px; }
+    .tab-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    .tab-badge { background: #ef4444; color: #fff; font-size: 0.65rem; border-radius: 10px; padding: 1px 6px; font-weight: 700; }
+    .tab-pill.active .tab-badge { background: #fff; color: var(--primary); }
+
+    .search-row { display: flex; gap: 8px; }
+    .search-box { flex: 1; position: relative; }
+    .search-box input { width: 100%; padding: 9px 12px 9px 34px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.85rem; outline: none; background: var(--input-bg); color: var(--text-main); }
+    .search-box i { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.85rem; }
+    .btn-announce { background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; padding: 0 12px; display: flex; align-items: center; gap: 6px; font-size: 0.78rem; font-weight: 600; cursor: pointer; color: var(--text-main); }
+
+    .conversations-scroll { flex: 1; overflow-y: auto; padding: 8px; }
+    .conv-item { display: flex; align-items: center; gap: 12px; padding: 12px; border-radius: 10px; cursor: pointer; margin-bottom: 4px; transition: background 0.15s; position: relative; }
+    .conv-item:hover { background: var(--input-bg); }
+    .conv-item.active { background: rgba(37, 99, 235, 0.1); border-left: 4px solid var(--primary); }
+    .conv-avatar { width: 42px; height: 42px; border-radius: 50%; background: #94a3b8; display: flex; align-items: center; justify-content: center; font-weight: 700; color: #fff; position: relative; flex-shrink: 0; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; background: #10b981; position: absolute; bottom: 0; right: 0; border: 2px solid var(--card-bg); }
+    .conv-info { flex: 1; min-width: 0; }
+    .conv-top { display: flex; justify-content: space-between; margin-bottom: 4px; }
+    .conv-name { font-weight: 600; font-size: 0.9rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .conv-time { font-size: 0.75rem; color: var(--text-muted); }
+    .conv-sub { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .conv-unread-dot { width: 8px; height: 8px; background: var(--primary); border-radius: 50%; display: none; margin-left: auto; }
+    .conv-item[data-unread="true"] .conv-unread-dot { display: block; }
+
+    /* CHAT PANEL */
+    .chat-panel { flex: 1; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; position: relative; }
+    .chat-header { padding: 14px 20px; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); z-index: 5; }
+    .recipient-meta { display: flex; align-items: center; gap: 12px; }
+    .recipient-name { font-size: 1rem; font-weight: 700; }
+    .recipient-status { font-size: 0.8rem; color: var(--text-muted); }
+    .btn-close-chat { background: var(--danger-bg); color: var(--danger); border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+
+    .pinned-broadcast-banner { background: #eff6ff; border-bottom: 1px solid #bfdbfe; padding: 10px 20px; display: none; align-items: center; justify-content: space-between; }
+    .pinned-broadcast-banner.show { display: flex; }
+    .broadcast-content { display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: #1e3a8a; }
+    .broadcast-badge { background: var(--primary); color: #fff; font-size: 0.65rem; font-weight: 800; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; }
+    .btn-dismiss-broadcast { background: none; border: none; color: #60a5fa; cursor: pointer; font-size: 0.95rem; }
+
+    .chat-toolbar { padding: 8px 20px; border-bottom: 1px solid var(--border-color); background: var(--toolbar-bg); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .chat-filters { display: flex; gap: 8px; }
+    .filter-chip { background: var(--card-bg); border: 1px solid var(--border-color); padding: 5px 12px; border-radius: 16px; font-size: 0.78rem; font-weight: 600; color: var(--text-muted); cursor: pointer; }
+    .filter-chip.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+    
+    .action-chips { display: flex; gap: 6px; }
+    .action-chip { background: rgba(37, 99, 235, 0.1); border: 1px solid var(--primary); color: var(--primary); padding: 5px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+
+    .chat-feed { flex: 1; overflow-y: auto; padding: 24px 20px 20px 20px; display: flex; flex-direction: column; gap: 14px; background: var(--bg-light); }
+    
+    .date-divider { display: flex; align-items: center; justify-content: center; margin: 8px 0; }
+    .date-divider span { background: var(--date-badge-bg); color: var(--text-muted); font-size: 0.72rem; font-weight: 600; padding: 3px 12px; border-radius: 12px; text-transform: uppercase; }
+
+    .msg-group { display: flex; flex-direction: column; max-width: 65%; position: relative; }
+    .msg-group.sent { align-self: flex-end; align-items: flex-end; }
+    .msg-group.received { align-self: flex-start; align-items: flex-start; }
+    
+    .bubble-row { display: flex; align-items: center; gap: 8px; position: relative; }
+    .msg-group.sent .bubble-row { flex-direction: row-reverse; }
+    
+    .bubble-container { position: relative; display: flex; flex-direction: column; }
+    .bubble { padding: 10px 16px; border-radius: 14px; font-size: 0.92rem; line-height: 1.45; position: relative; word-break: break-word; }
+    .msg-group.sent .bubble { background-color: var(--chat-bubble-user); color: #fff; border-bottom-right-radius: 3px; }
+    .msg-group.received .bubble { background-color: var(--chat-bubble-other); color: var(--text-main); border: 1px solid var(--border-color); border-bottom-left-radius: 3px; }
+    .bubble.is-pinned::before { content: '\f08d'; font-family: 'Font Awesome 6 Free'; font-weight: 900; position: absolute; top: -9px; right: -6px; background: var(--pin-gold); color: #fff; font-size: 0.65rem; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+
+    .reaction-badge { position: absolute; bottom: -10px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 12px; padding: 1px 6px; font-size: 0.72rem; display: flex; align-items: center; gap: 3px; box-shadow: 0 2px 4px rgba(0,0,0,0.08); z-index: 2; cursor: pointer; }
+    .msg-group.sent .reaction-badge { right: 8px; }
+    .msg-group.received .reaction-badge { left: 8px; }
+
+    .quick-react-bar { position: absolute; top: -28px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; padding: 2px 6px; display: none; gap: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.12); z-index: 10; }
+    .bubble-row:hover .quick-react-bar { display: flex; }
+    .msg-group.sent .quick-react-bar { right: 0; }
+    .msg-group.received .quick-react-bar { left: 0; }
+    .react-emoji-btn { background: none; border: none; cursor: pointer; font-size: 0.95rem; padding: 2px 4px; border-radius: 50%; }
+
+    .search-highlight { background-color: #fde047; color: #0f172a; padding: 1px 3px; border-radius: 3px; font-weight: 700; }
+
+    .bubble img.msg-image { max-width: 260px; border-radius: 8px; display: block; margin-bottom: 4px; cursor: pointer; }
+    .doc-attachment-card { display: flex; align-items: center; gap: 10px; background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 8px; text-decoration: none; color: inherit; cursor: pointer; }
+    .msg-group.received .doc-attachment-card { background: var(--date-badge-bg); }
+
+    .rent-card { background: var(--card-bg); color: var(--text-main) !important; border: 1px solid var(--border-color); border-radius: 10px; padding: 14px; width: 290px; box-shadow: 0 4px 10px rgba(0,0,0,0.04); }
+    .rent-card-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed var(--border-color); padding-bottom: 8px; margin-bottom: 10px; }
+    .rent-card-title { font-size: 0.85rem; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+    .rent-status-badge { font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; text-transform: uppercase; }
+    .rent-status-badge.paid { background: var(--success-bg); color: var(--success); }
+    .rent-amount { font-size: 1.45rem; font-weight: 800; margin-bottom: 4px; }
+    .rent-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 12px; line-height: 1.4; }
+    .btn-rent-action { width: 100%; background: var(--input-bg); border: 1px solid var(--border-color); border-radius: 6px; padding: 7px; font-size: 0.78rem; font-weight: 600; color: var(--text-main); cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+    .maintenance-card { background: var(--card-bg); color: var(--text-main) !important; border: 1px solid var(--border-color); border-left-width: 4px; border-radius: 8px; padding: 12px 14px; width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.03); }
+    .maintenance-card.high { border-left-color: var(--danger); }
+    .maintenance-card.medium { border-left-color: var(--warning); }
+    .maintenance-card.low { border-left-color: #3b82f6; }
+    .maintenance-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+    .maintenance-tag { font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; text-transform: uppercase; }
+    .maintenance-tag.high { background: var(--danger-bg); color: var(--danger); }
+    .maintenance-tag.medium { background: var(--warning-bg); color: var(--warning); }
+    .maintenance-title { font-size: 0.88rem; font-weight: 700; margin-bottom: 4px; }
+    .maintenance-desc { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
+    
+    .maintenance-status-pill { display: inline-flex; align-items: center; gap: 5px; font-size: 0.72rem; font-weight: 600; padding: 3px 8px; border-radius: 6px; cursor: pointer; border: 1px solid transparent; }
+    .maintenance-status-pill.status-review { background: #fef3c7; color: #b45309; }
+    .maintenance-status-pill.status-progress { background: #eff6ff; color: #1d4ed8; }
+    .maintenance-status-pill.status-resolved { background: #d1fae5; color: #047857; }
+
+    .voice-player { display: flex; align-items: center; gap: 10px; min-width: 230px; }
+    .voice-play-btn { width: 34px; height: 34px; border-radius: 50%; border: none; background: #fff; color: var(--primary); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; flex-shrink: 0; }
+    .msg-group.received .voice-play-btn { background: var(--primary); color: #fff; }
+    .waveform-container { flex: 1; height: 8px; background: rgba(255, 255, 255, 0.35); border-radius: 4px; position: relative; cursor: pointer; }
+    .msg-group.received .waveform-container { background: var(--date-badge-bg); }
+    .waveform-progress { position: absolute; top: 0; left: 0; height: 100%; width: 0%; background: #ffffff; border-radius: 4px; pointer-events: none; transition: width 0.05s linear; }
+    .msg-group.received .waveform-progress { background: var(--primary); }
+    .voice-timestamp { font-size: 0.75rem; font-weight: 600; min-width: 32px; text-align: right; }
+    .msg-time { font-size: 0.72rem; margin-top: 4px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; }
+
+    .msg-menu-btn { opacity: 0; background: var(--card-bg); border: 1px solid var(--border-color); width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); cursor: pointer; }
+    .bubble-row:hover .msg-menu-btn { opacity: 1; }
+    .msg-dropdown { position: absolute; top: 30px; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: 0 6px 16px rgba(0,0,0,0.12); z-index: 100; width: 130px; padding: 4px 0; display: none; }
+    .msg-dropdown.show { display: block; }
+    .msg-group.sent .msg-dropdown { right: 0; }
+    .msg-group.received .msg-dropdown { left: 0; }
+    .msg-dropdown button { width: 100%; text-align: left; padding: 8px 12px; border: none; background: transparent; font-size: 0.8rem; color: var(--text-main); display: flex; align-items: center; gap: 8px; cursor: pointer; }
+    .msg-dropdown button:hover { background: var(--input-bg); color: var(--primary); }
+    .msg-dropdown button.delete-btn { color: var(--danger); }
+    .bubble.deleted { font-style: italic; color: #94a3b8 !important; background: #f1f5f9 !important; border: 1px dashed var(--border-color); }
+
+    .attachment-tray { display: flex; align-items: center; gap: 12px; padding: 8px 20px; background: var(--toolbar-bg); border-top: 1px solid var(--border-color); }
+    .tray-preview { width: 40px; height: 40px; border-radius: 6px; background: var(--date-badge-bg); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .tray-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .tray-info { flex: 1; font-size: 0.82rem; }
+    .tray-filename { font-weight: 600; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 300px; color: var(--text-main); }
+    .tray-filesize { font-size: 0.72rem; color: var(--text-muted); }
+    .btn-tray-remove { background: transparent; border: none; cursor: pointer; color: var(--text-muted); font-size: 0.9rem; }
+
+    .chat-dock { padding: 12px 20px; border-top: 1px solid var(--border-color); display: flex; align-items: flex-end; gap: 10px; background: var(--card-bg); position: relative; }
+    .tool-btn { background: transparent; border: none; color: var(--text-muted); width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+    .tool-btn:hover { background: var(--input-bg); color: var(--primary); }
+    
+    .input-wrapper { flex: 1; position: relative; display: flex; align-items: center; }
+    .input-wrapper textarea {
+      width: 100%;
+      resize: none;
+      max-height: 120px;
+      min-height: 42px;
+      height: 42px;
+      padding: 10px 42px 10px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      font-size: 0.92rem;
+      line-height: 1.4;
+      outline: none;
+      background: var(--input-bg);
+      color: var(--text-main);
+      overflow-y: auto;
+    }
+    .input-wrapper textarea:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15); }
+    
+    .btn-inside-mic { position: absolute; right: 8px; bottom: 6px; background: none; border: none; width: 30px; height: 30px; border-radius: 50%; color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.95rem; }
+    .btn-inside-mic:hover { color: var(--primary); background: var(--date-badge-bg); }
+
+    .btn-send { background: var(--primary); color: #fff; border: none; border-radius: 50%; width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+    .btn-send:hover { background: var(--primary-hover); }
+
+    .voice-record-dock { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: var(--card-bg); display: none; align-items: center; justify-content: space-between; padding: 0 20px; z-index: 10; }
+    .voice-record-dock.active { display: flex; }
+    .record-indicator-wrap { display: flex; align-items: center; gap: 12px; }
+    .record-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--danger); animation: blink 1s infinite alternate; }
+    @keyframes blink { 0% { opacity: 1; } 100% { opacity: 0.2; } }
+    .record-timer { font-weight: 600; font-size: 0.95rem; color: var(--danger); }
+    .record-actions { display: flex; align-items: center; gap: 12px; }
+    .btn-record-cancel { background: var(--input-bg); color: var(--text-muted); border: none; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; }
+    .btn-record-send { background: var(--danger); color: #fff; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    .chat-empty-state { flex: 1; display: none; flex-direction: column; align-items: center; justify-content: center; color: var(--text-muted); gap: 12px; text-align: center; }
+    .chat-empty-state.show { display: flex; }
+    .empty-state-icon { width: 70px; height: 70px; border-radius: 50%; background: #e2e8f0; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: #94a3b8; }
+
+    .lightbox-modal { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.88); backdrop-filter: blur(4px); display: none; align-items: center; justify-content: center; z-index: 500; }
+    .lightbox-modal.show { display: flex; }
+    .lightbox-content { max-width: 85vw; max-height: 85vh; border-radius: 10px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); object-fit: contain; }
+    .btn-lightbox-close { position: absolute; top: 24px; right: 28px; background: rgba(255,255,255,0.15); border: none; color: #fff; font-size: 1.4rem; width: 44px; height: 44px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+
+    .doc-preview-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 500; }
+    .doc-preview-modal.show { display: flex; }
+    .doc-sheet { background: #fff; width: 550px; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.25); display: flex; flex-direction: column; }
+    .doc-sheet-header { padding: 14px 20px; background: #0f172a; color: #fff; display: flex; justify-content: space-between; align-items: center; }
+    .doc-sheet-body { padding: 24px; max-height: 70vh; overflow-y: auto; background: #f8fafc; font-family: monospace; font-size: 0.85rem; line-height: 1.6; border-bottom: 1px solid var(--border-color); }
+
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 200; }
+    .modal-backdrop.show { display: flex; }
+    .modal-card { background: #fff; width: 440px; border-radius: 12px; padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); border: 1px solid var(--border-color); color: var(--text-main); }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .modal-title { font-size: 1.05rem; font-weight: 700; }
+    .form-group { margin-bottom: 14px; }
+    .form-group label { display: block; font-size: 0.8rem; font-weight: 600; margin-bottom: 6px; }
+    .form-group select, .form-group input, .form-group textarea { width: 100%; padding: 9px 12px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; font-size: 0.88rem; background: var(--input-bg); color: var(--text-main); }
+    .modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 18px; }
+    .btn-modal-cancel { background: var(--date-badge-bg); color: var(--text-main); border: none; padding: 8px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    .btn-modal-submit { background: var(--primary); color: #fff; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+
+    .toast-feedback { position: fixed; bottom: 24px; right: 24px; background: #0f172a; color: #fff; padding: 10px 18px; border-radius: 8px; font-size: 0.85rem; opacity: 0; transform: translateY(20px); transition: all 0.25s ease; z-index: 1000; pointer-events: none; }
+    .toast-feedback.show { opacity: 1; transform: translateY(0); }
+  </style>
+
+<style id="th-workspace-fix">
+  body.has-sidebar { display: flex !important; width: 100vw !important; height: 100vh !important; overflow: hidden !important; margin: 0 !important; }
+  .main-workspace { flex: 1 1 auto !important; display: flex !important; flex-direction: row !important; height: 100vh !important; width: calc(100vw - 240px) !important; overflow: hidden !important; background: #f8fafc !important; }
+  .conversations-panel { width: 320px !important; min-width: 320px !important; max-width: 320px !important; height: 100% !important; background: #ffffff !important; border-right: 1px solid #e2e8f0 !important; display: flex !important; flex-direction: column !important; overflow-x: hidden !important; box-sizing: border-box !important; }
+  .chat-panel, #chatPanel { flex: 1 1 0% !important; min-width: 0 !important; width: 100% !important; height: 100% !important; display: flex !important; flex-direction: column !important; background: #ffffff !important; box-sizing: border-box !important; overflow: hidden !important; }
+  #activeChatWrapper { width: 100% !important; height: 100% !important; display: flex !important; flex-direction: column !important; box-sizing: border-box !important; overflow: hidden !important; }
+  .chat-feed, #chatFeed { flex: 1 1 auto !important; width: 100% !important; overflow-y: auto !important; overflow-x: hidden !important; padding: 20px !important; display: flex !important; flex-direction: column !important; gap: 14px !important; background: #f8fafc !important; box-sizing: border-box !important; }
+  .msg-group { width: 100% !important; display: flex !important; box-sizing: border-box !important; }
+  .msg-group.received { justify-content: flex-start !important; }
+  .msg-group.sent { justify-content: flex-end !important; }
+  .msg-group > * { max-width: 75% !important; min-width: 140px !important; word-break: break-word !important; box-sizing: border-box !important; }
+  .chat-composer, form#chatForm, .chat-input-bar { display: flex !important; flex-direction: row !important; align-items: center !important; gap: 10px !important; padding: 12px 18px !important; background: #ffffff !important; border-top: 1px solid #e2e8f0 !important; width: 100% !important; box-sizing: border-box !important; }
+  .chat-composer input, form#chatForm input[type="text"], .chat-composer textarea { flex: 1 1 auto !important; min-width: 0 !important; height: 42px !important; padding: 0 16px !important; border-radius: 22px !important; border: 1px solid #cbd5e1 !important; outline: none !important; font-size: 0.95rem !important; box-sizing: border-box !important; }
+</style>
+</head>
+<body class="has-sidebar">
+
+  <!-- SIDEBAR -->
+  <!-- SIDEBAR -->
+<aside class="sidebar" id="mainNav">
+  <a href="index.html" class="brand">
+    <span class="brand-mark">TH</span>
+    <span class="brand-name">TenancyHub</span>
+  </a>
+  <nav class="main-nav">
+    <a href="index.html" class="nav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      Dashboard
+    </a>
+    <a href="tenants.html" class="nav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-5.5 6-5.5s6 2.2 6 5.5"/><circle cx="17.5" cy="9" r="2.4"/><path d="M15.8 14.8c2.6.3 4.7 2.3 4.7 5.2"/></svg>
+      Tenants
+    </a>
+    <a href="payments.html" class="nav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6 8v.01M18 16v.01"/></svg>
+      Payments
+    </a>
+    <a href="messages.html" class="nav-link active">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5.5h16a1 1 0 0 1 1 1V15a1 1 0 0 1-1 1H9l-4.2 3.5A.6.6 0 0 1 4 19v-2.5H4a1 1 0 0 1-1-1V6.5a1 1 0 0 1 1-1z"/></svg>
+      Messages
+    </a>
+    <a href="settings.html" class="nav-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2.5v2.2M12 19.3v2.2M4.2 4.2l1.6 1.6M18.2 18.2l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.2 19.8l1.6-1.6M18.2 5.8l1.6-1.6"/></svg>
+      Settings
+    </a>
+  </nav>
+  <div class="user-menu">
+    <span class="user-chip" id="userChip"></span>
+    <button type="button" id="themeToggleBtn" class="btn btn-ghost-light" aria-label="Toggle dark mode"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8.5 8.5 0 1 1 9.5 4a7 7 0 0 0 10.5 10.5z"/></svg> Dark mode</button>
+    <button id="logoutBtn" class="btn btn-ghost-light">Log out</button>
+  </div>
+</aside>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="main-workspace">
+    <section class="conversations-panel">
+      <div class="conv-header">
+        <div class="conv-tabs">
+          <button type="button" class="tab-pill active" onclick="switchConvTab(this, 'all')">All</button>
+          <button type="button" class="tab-pill" onclick="switchConvTab(this, 'unread')">
+            Unread <span class="tab-badge" id="unreadBadgeCount">1</span>
+          </button>
+          <button type="button" class="tab-pill" onclick="switchConvTab(this, 'pinned')">Pinned</button>
+        </div>
+        <div class="search-row">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="convSearch" placeholder="Search in chat..." onkeyup="filterConversations()" />
+          </div>
+          <button type="button" class="btn-announce" id="btnAnnounce" onclick="openAnnounceModal()"><i class="fa-solid fa-bullhorn"></i> Announce</button>
+        </div>
+      </div>
+
+      <div class="conversations-scroll" id="convList">
+        <div class="conv-item active" data-conv-id="conv_1" data-unread="false" data-pinned="true" onclick="switchConversation('conv_1')">
+          <div class="conv-avatar">MK<span class="status-dot"></span></div>
+          <div class="conv-info">
+            <div class="conv-top">
+              <span class="conv-name">Mutiu Kamalideen <i class="fa-solid fa-thumbtack text-amber-500" style="font-size: 0.7rem;"></i></span>
+              <span class="conv-time">Just now</span>
+            </div>
+            <div class="conv-sub">Adogbon Properties · Flat 1</div>
+          </div>
+          <div class="conv-unread-dot"></div>
+        </div>
+
+        <div class="conv-item" data-conv-id="conv_2" data-unread="true" data-pinned="false" onclick="switchConversation('conv_2')">
+          <div class="conv-avatar">SJ<span class="status-dot"></span></div>
+          <div class="conv-info">
+            <div class="conv-top">
+              <span class="conv-name">Sarah Jenkins</span>
+              <span class="conv-time">2h ago</span>
+            </div>
+            <div class="conv-sub">Adogbon Properties · Flat 4</div>
+          </div>
+          <div class="conv-unread-dot"></div>
+        </div>
+
+        <div class="conv-item" data-conv-id="conv_3" data-unread="false" data-pinned="false" onclick="switchConversation('conv_3')">
+          <div class="conv-avatar">EO</div>
+          <div class="conv-info">
+            <div class="conv-top">
+              <span class="conv-name">Emeka Obi</span>
+              <span class="conv-time">Yesterday</span>
+            </div>
+            <div class="conv-sub">Greenfield Heights · Suite B2</div>
+          </div>
+          <div class="conv-unread-dot"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAT PANEL -->
+    <section class="chat-panel" id="chatPanel">
+      <div class="chat-empty-state" id="chatEmptyState">
+        <div class="empty-state-icon"><i class="fa-regular fa-comment-dots"></i></div>
+        <h3>No Conversation Selected</h3>
+        <p>Choose a tenant from the directory on the left to review tickets or dispatch notices.</p>
+      </div>
+
+      <div id="activeChatWrapper" style="display: flex; flex-direction: column; height: 100%; width: 100%;">
+        <header class="chat-header">
+          <div class="recipient-meta">
+            <div class="conv-avatar" id="activeRecipientAvatar">MK<span class="status-dot"></span></div>
+            <div>
+              <div class="recipient-name" id="activeRecipientName">Mutiu Kamalideen</div>
+              <div class="recipient-status" id="activeRecipientStatus">Adogbon Properties · Flat 1 (Active now)</div>
+            </div>
+          </div>
+          <div class="chat-actions">
+            <button type="button" class="btn-close-chat" onclick="closeActiveChat()"><i class="fa-solid fa-xmark"></i> Close</button>
+          </div>
+        </header>
+
+        <div class="pinned-broadcast-banner" id="pinnedBroadcast">
+          <div class="broadcast-content">
+            <span class="broadcast-badge"><i class="fa-solid fa-bullhorn"></i> Notice</span>
+            <span id="broadcastTextDisplay">Estate Water Pump maintenance scheduled for tomorrow 10:00 AM.</span>
+          </div>
+          <button type="button" class="btn-dismiss-broadcast" onclick="dismissBroadcast()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="chat-toolbar">
+          <div class="chat-filters">
+            <button type="button" class="filter-chip active" onclick="filterChat('all', this)">All</button>
+            <button type="button" class="filter-chip" onclick="filterChat('media', this)"><i class="fa-regular fa-image"></i> Photos &amp; video</button>
+            <button type="button" class="filter-chip" onclick="filterChat('doc', this)"><i class="fa-regular fa-file-lines"></i> Documents</button>
+            <button type="button" class="filter-chip" onclick="filterChat('pinned', this)"><i class="fa-solid fa-thumbtack"></i> Pinned</button>
+          </div>
+
+          <div class="action-chips">
+            <button type="button" class="action-chip" onclick="openMaintenanceModal()">
+              <i class="fa-solid fa-wrench"></i> Log Maintenance
+            </button>
+            <button type="button" class="action-chip" id="btnSendRentCard" onclick="openRentModal()">
+              <i class="fa-solid fa-receipt"></i> Issue Rent Receipt
+            </button>
+          </div>
+        </div>
+
+        <div class="chat-feed" id="chatFeed"></div>
+
+        <div class="attachment-tray" id="attachmentTray" style="display: none;">
+          <div class="tray-preview" id="trayPreview"></div>
+          <div class="tray-info">
+            <span class="tray-filename" id="trayFilename">filename.pdf</span>
+            <span class="tray-filesize" id="trayFilesize">0.00 MB</span>
+          </div>
+          <button type="button" class="btn-tray-remove" id="btnRemoveAttachment" onclick="clearPendingAttachment()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
+        <div class="voice-record-dock" id="voiceRecordDock">
+          <div class="record-indicator-wrap">
+            <div class="record-dot"></div>
+            <span class="record-timer" id="recordTimer">0:00</span>
+          </div>
+          <div class="record-actions">
+            <button type="button" class="btn-record-cancel" onclick="cancelVoiceRecording()"><i class="fa-regular fa-trash-can"></i></button>
+            <button type="button" class="btn-record-send" onclick="sendVoiceRecording()"><i class="fa-solid fa-arrow-up"></i></button>
+          </div>
+        </div>
+
+        <footer class="chat-dock">
+          <input type="file" id="mediaUpload" accept="image/*,video/*" hidden onchange="handleFileSelection(event, 'media')" />
+          <input type="file" id="docUpload" accept=".pdf,.doc,.docx,.txt" hidden onchange="handleFileSelection(event, 'doc')" />
+
+          <button type="button" class="tool-btn" title="Attach photos or videos" onclick="document.getElementById('mediaUpload').click()">
+            <i class="fa-solid fa-paperclip"></i>
+          </button>
+          <button type="button" class="tool-btn" title="Attach document" onclick="document.getElementById('docUpload').click()">
+            <i class="fa-regular fa-file-lines"></i>
+          </button>
+
+          <div class="input-wrapper">
+            <textarea id="messageInput" rows="1" placeholder="Type a message..." autocomplete="off"></textarea>
+            <button type="button" class="btn-inside-mic" title="Record voice note" onclick="startVoiceRecording()">
+              <i class="fa-solid fa-microphone"></i>
+            </button>
+          </div>
+
+          <button type="button" class="btn-send" id="btnSendMessage" onclick="dispatchMessage()">
+            <i class="fa-solid fa-paper-plane"></i>
+          </button>
+        </footer>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODALS -->
+  <div class="doc-preview-modal" id="docPreviewModal" onclick="closeDocPreview()">
+    <div class="doc-sheet" onclick="event.stopPropagation()">
+      <div class="doc-sheet-header">
+        <span id="docSheetTitle"><i class="fa-solid fa-file-pdf"></i> Document</span>
+        <button type="button" style="background:none; border:none; color:#fff; cursor:pointer;" onclick="closeDocPreview()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="doc-sheet-body" id="docSheetBody"></div>
+      <div style="padding: 12px 20px; display:flex; justify-content: flex-end; background:#fff;">
+        <button type="button" class="btn-modal-submit" onclick="showToast('Printing document...')"><i class="fa-solid fa-print"></i> Print</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="lightbox-modal" id="lightboxModal" onclick="closeLightbox()">
+    <button type="button" class="btn-lightbox-close"><i class="fa-solid fa-xmark"></i></button>
+    <img src="" class="lightbox-content" id="lightboxImg" alt="Preview" onclick="event.stopPropagation()" />
+  </div>
+
+  <div class="modal-backdrop" id="rentModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fa-solid fa-receipt text-blue-600"></i> Issue Custom Rent Receipt</div>
+        <button type="button" style="background:none;border:none;cursor:pointer;" onclick="closeRentModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group">
+        <label>Rent Amount (₦)</label>
+        <input type="text" id="receiptAmount" placeholder="e.g., ₦ 400,000" value="₦ 350,000" />
+      </div>
+      <div class="form-group">
+        <label>Property &amp; Flat</label>
+        <input type="text" id="receiptProperty" placeholder="e.g., Adogbon Properties · Flat 1" value="Adogbon Properties · Flat 1" />
+      </div>
+      <div class="form-group">
+        <label>Rental Period</label>
+        <input type="text" id="receiptPeriod" placeholder="e.g., Nov 2026 – Oct 2027" value="Nov 2026 – Oct 2027" />
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal-cancel" onclick="closeRentModal()">Cancel</button>
+        <button type="button" class="btn-modal-submit" onclick="submitRentReceipt()">Dispatch Receipt</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="maintenanceModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fa-solid fa-wrench text-blue-600"></i> New Maintenance Ticket</div>
+        <button type="button" style="background:none;border:none;cursor:pointer;" onclick="closeMaintenanceModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group">
+        <label>Issue Title</label>
+        <input type="text" id="maintTitle" placeholder="e.g., Kitchen Sink Clogged" />
+      </div>
+      <div class="form-group">
+        <label>Priority Level</label>
+        <select id="maintPriority">
+          <option value="high">High (Urgent Water/Electrical)</option>
+          <option value="medium" selected>Medium (Standard Repairs)</option>
+          <option value="low">Low (Cosmetic / Routine)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="maintDesc" rows="3" placeholder="Explain the damage or issue in detail..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal-cancel" onclick="closeMaintenanceModal()">Cancel</button>
+        <button type="button" class="btn-modal-submit" onclick="submitMaintenanceTicket()">Post to Chat</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="announceModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title"><i class="fa-solid fa-bullhorn text-blue-600"></i> Broadcast Notice</div>
+        <button type="button" style="background:none;border:none;cursor:pointer;" onclick="closeAnnounceModal()"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="form-group">
+        <label>Announcement Notice</label>
+        <textarea id="announceText" rows="4" placeholder="Write an announcement to all tenants..."></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn-modal-cancel" onclick="closeAnnounceModal()">Cancel</button>
+        <button type="button" class="btn-modal-submit" onclick="submitAnnouncement()">Send Broadcast</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-feedback" id="toastMsg">Notification</div>
+
+  <!-- PRODUCTION REAL-TIME JAVASCRIPT -->
+  <script>
+    const socket = io();
+
+    const chatFeed = document.getElementById('chatFeed');
+    const messageInput = document.getElementById('messageInput');
+    const attachmentTray = document.getElementById('attachmentTray');
+
+    let currentAttachment = null;
+    let activeRecording = false;
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let voiceInterval = null;
+    let voiceSeconds = 0;
+    let activeAudioInstance = null;
+    let activeAudioPlayBtn = null;
+    let activeConvId = 'conv_1';
+
+    // Seeded conversation threads
+    const conversationsData = {
+      conv_1: {
+        name: 'Mutiu Kamalideen',
+        initials: 'MK',
+        sub: 'Adogbon Properties · Flat 1 (Active now)',
+        dates: [
+          {
+            label: 'Today',
+            messages: [
+              {
+                id: 'm1_1',
+                senderRole: 'Tenant',
+                type: 'text',
+                content: 'Hello Landlord, I have sent the meter reading for this month.',
+                time: '10:15 AM'
+              },
+              {
+                id: 'm1_2',
+                senderRole: 'Landlord',
+                type: 'widget_rent',
+                amount: '₦ 350,000',
+                property: 'Adogbon Properties · Flat 1',
+                period: 'Sept 2026 – Aug 2027',
+                ref: 'TH-PAY-882910',
+                time: '10:18 AM'
+              }
+            ]
+          }
+        ]
+      },
+      conv_2: {
+        name: 'Sarah Jenkins',
+        initials: 'SJ',
+        sub: 'Adogbon Properties · Flat 4 (Active 15m ago)',
+        dates: [
+          {
+            label: 'Today',
+            messages: [
+              {
+                id: 'm2_1',
+                senderRole: 'Tenant',
+                type: 'text',
+                content: 'Good morning sir, could you confirm when the AC repair technician is coming?',
+                time: '08:30 AM'
+              }
+            ]
+          }
+        ]
+      },
+      conv_3: {
+        name: 'Emeka Obi',
+        initials: 'EO',
+        sub: 'Greenfield Heights · Suite B2 (Offline)',
+        dates: [
+          {
+            label: 'September 10, 2026',
+            messages: [
+              {
+                id: 'm3_1',
+                senderRole: 'Tenant',
+                type: 'text',
+                content: 'Good day sir. The tenancy renewal agreement has been signed and dispatched.',
+                time: '04:22 PM'
+              }
+            ]
+          }
+        ]
+      }
+    };
+
+    // Join room immediately
+    socket.emit('join_conversation', activeConvId);
+
+    function switchConversation(convId) {
+      activeConvId = convId;
+      socket.emit('join_conversation', convId);
+
+      const conv = conversationsData[convId];
+      if (!conv) return;
+
+      document.getElementById('activeChatWrapper').style.display = 'flex';
+      document.getElementById('chatEmptyState').classList.remove('show');
+
+      document.querySelectorAll('#convList .conv-item').forEach(item => {
+        const isMatch = item.dataset.convId === convId;
+        item.classList.toggle('active', isMatch);
+        if (isMatch) item.setAttribute('data-unread', 'false');
+      });
+
+      const unreadCount = document.querySelectorAll('#convList .conv-item[data-unread="true"]').length;
+      document.getElementById('unreadBadgeCount').innerText = unreadCount;
+
+      document.getElementById('activeRecipientName').innerText = conv.name;
+      document.getElementById('activeRecipientAvatar').innerHTML = `${conv.initials}<span class="status-dot"></span>`;
+      document.getElementById('activeRecipientStatus').innerText = conv.sub;
+
+      renderActiveConversation();
+      showToast(`Opened chat with ${conv.name}`);
+    }
+
+    function renderActiveConversation() {
+      chatFeed.innerHTML = '';
+      const conv = conversationsData[activeConvId];
+      if (!conv) return;
+
+      conv.dates.forEach(cluster => {
+        const dateDiv = document.createElement('div');
+        dateDiv.className = 'date-divider';
+        dateDiv.innerHTML = `<span>${cluster.label}</span>`;
+        chatFeed.appendChild(dateDiv);
+
+        cluster.messages.forEach(msg => appendMessageElement(msg));
+      });
+
+      scrollToBottom();
+    }
+
+    function appendMessageElement(msg) {
+      const roleSelectorEl = document.getElementById('roleSelector');
+      const currentRole = roleSelectorEl ? roleSelectorEl.value : 'landlord';
+      const isSent = (msg.senderRole === currentRole);
+
+      const group = document.createElement('div');
+      group.className = `msg-group ${isSent ? 'sent' : 'received'}`;
+      group.id = msg.id;
+
+      let innerContent = '';
+
+      if (msg.type === 'text') {
+        group.setAttribute('data-type', 'text');
+        innerContent = `<div class="bubble">${msg.content}</div>`;
+      } else if (msg.type === 'media' && msg.fileUrl) {
+        group.setAttribute('data-type', 'media');
+        innerContent = `<div class="bubble"><img src="${msg.fileUrl}" class="msg-image" onclick="openLightbox('${msg.fileUrl}')" />${msg.content ? '<div>' + msg.content + '</div>' : ''}</div>`;
+      } else if (msg.type === 'doc' && msg.fileUrl) {
+        group.setAttribute('data-type', 'doc');
+        innerContent = `
+          <div class="bubble">
+            <div class="doc-attachment-card" onclick="openDocPreview('${msg.fileName || 'Document'}')">
+              <i class="fa-solid fa-file-pdf"></i>
+              <div>
+                <div style="font-weight:600;">${msg.fileName || 'Attachment'}</div>
+                <div style="font-size:0.75rem;opacity:0.8;">${msg.fileSize || ''}</div>
+              </div>
+            </div>
+            ${msg.content ? '<div style="margin-top:4px;">' + msg.content + '</div>' : ''}
+          </div>`;
+      } else if (msg.type === 'audio' && msg.fileUrl) {
+        group.setAttribute('data-type', 'audio');
+        innerContent = `
+          <div class="bubble">
+            <div class="voice-player" data-src="${msg.fileUrl}">
+              <button type="button" class="voice-play-btn"><i class="fa-solid fa-play"></i></button>
+              <div class="waveform-container">
+                <div class="waveform-progress"></div>
+              </div>
+              <span class="voice-timestamp">0:00</span>
+            </div>
+          </div>`;
+      } else if (msg.type === 'widget_rent') {
+        group.setAttribute('data-type', 'doc');
+        innerContent = `
+          <div class="rent-card">
+            <div class="rent-card-header">
+              <span class="rent-card-title"><i class="fa-solid fa-shield-halved text-blue-600"></i> Rent Receipt</span>
+              <span class="rent-status-badge paid"><i class="fa-solid fa-check"></i> Paid</span>
+            </div>
+            <div class="rent-amount">${msg.amount}</div>
+            <div class="rent-meta">
+              <div><strong>Property:</strong> ${msg.property}</div>
+              <div><strong>Period:</strong> ${msg.period}</div>
+              <div><strong>Ref:</strong> ${msg.ref}</div>
+            </div>
+            <button type="button" class="btn-rent-action" onclick="openDocPreview('Rent_Receipt_${msg.ref}.pdf')">
+              <i class="fa-solid fa-file-arrow-down"></i> View Signed Receipt PDF
+            </button>
+          </div>`;
+      } else if (msg.type === 'widget_maint') {
+        group.setAttribute('data-type', 'text');
+        innerContent = `
+          <div class="maintenance-card ${msg.priority}">
+            <div class="maintenance-top">
+              <span style="font-size:0.75rem;font-weight:700;color:var(--text-muted);"><i class="fa-solid fa-wrench"></i> TICKET #${msg.ticketNum}</span>
+              <span class="maintenance-tag ${msg.priority}">${msg.priority.toUpperCase()} PRIORITY</span>
+            </div>
+            <div class="maintenance-title">${msg.title}</div>
+            <div class="maintenance-desc">${msg.desc}</div>
+            <div class="maintenance-status">
+              <span class="maintenance-status-pill status-review" onclick="cycleTicketStatus(this)">
+                <i class="fa-solid fa-clock"></i> Status: <strong>${msg.status}</strong>
+              </span>
+            </div>
+          </div>`;
+      }
+
+      group.innerHTML = `
+        <div class="bubble-row">
+          <div class="quick-react-bar">
+            <button type="button" class="react-emoji-btn" onclick="addReaction('${msg.id}', '👍')">👍</button>
+            <button type="button" class="react-emoji-btn" onclick="addReaction('${msg.id}', '❤️')">❤️</button>
+            <button type="button" class="react-emoji-btn" onclick="addReaction('${msg.id}', '👏')">👏</button>
+            <button type="button" class="react-emoji-btn" onclick="addReaction('${msg.id}', '😮')">😮</button>
+          </div>
+          <div class="bubble-container" id="container-${msg.id}">
+            ${innerContent}
+          </div>
+          <button type="button" class="msg-menu-btn" onclick="toggleMenu(event, 'menu-${msg.id}')"><i class="fa-solid fa-ellipsis-vertical"></i></button>
+          <div class="msg-dropdown" id="menu-${msg.id}">
+            <button type="button" onclick="pinMessage('${msg.id}')"><i class="fa-solid fa-thumbtack"></i> Pin</button>
+            <button type="button" onclick="copyMessage('${msg.id}')"><i class="fa-regular fa-copy"></i> Copy</button>
+            <button type="button" class="delete-btn" onclick="deleteMessage('${msg.id}')"><i class="fa-regular fa-trash-can"></i> Delete</button>
+          </div>
+        </div>
+        <div class="msg-time">${msg.time} ${isSent ? '<i class="fa-solid fa-check-double text-blue-500"></i>' : ''}</div>
+      `;
+
+      chatFeed.appendChild(group);
+      scrollToBottom();
+    }
+
+    renderActiveConversation();
+
+    function scrollToBottom() { chatFeed.scrollTop = chatFeed.scrollHeight; }
+
+    /* REAL-TIME SOCKET LISTENER */
+    socket.on('receive_message', (msg) => {
+      if (msg.conversationId === activeConvId) {
+        appendMessageElement(msg);
+      }
+    });
+
+    socket.on('pinned_announcement', (announcement) => {
+      document.getElementById('broadcastTextDisplay').innerText = announcement.text;
+      document.getElementById('pinnedBroadcast').classList.add('show');
+    });
+
+    /* SEND MESSAGE & UPLOAD ATTACHMENT */
+    async function dispatchMessage() {
+      const text = messageInput.value.trim();
+      if (!text && !currentAttachment) return;
+
+      let fileUrl = null;
+      let fileType = 'text';
+      let fileName = null;
+      let fileSize = null;
+
+      if (currentAttachment) {
+        const formData = new FormData();
+        formData.append('file', currentAttachment.file);
+
+        try {
+          const res = await fetch('/api/upload', { method: 'POST', body: formData });
+          const uploadResult = await res.json();
+          if (uploadResult.success) {
+            fileUrl = uploadResult.fileUrl;
+            fileType = currentAttachment.type;
+            fileName = uploadResult.originalName;
+            fileSize = uploadResult.size;
+          }
+        } catch (err) {
+          showToast('File upload failed');
+          return;
+        }
+      }
+
+      const role = document.getElementById('roleSelector').value;
+      const payload = {
+        id: 'msg-' + Date.now(),
+        conversationId: activeConvId,
+        senderRole: role,
+        type: fileType,
+        content: text,
+        fileUrl: fileUrl,
+        fileName: fileName,
+        fileSize: fileSize,
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      socket.emit('send_message', payload);
+
+      messageInput.value = '';
+      messageInput.style.height = '42px';
+      clearPendingAttachment();
+    }
+
+    messageInput.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    });
+
+    messageInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        dispatchMessage();
+      }
+    });
+
+    /* REAL VOICE RECORDING & LIVE UPLOAD */
+    async function startVoiceRecording() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+
+        mediaRecorder.ondataavailable = (e) => {
+          if (e.data.size > 0) audioChunks.push(e.data);
+        };
+
+        mediaRecorder.start();
+        activeRecording = true;
+        document.getElementById('voiceRecordDock').classList.add('active');
+        voiceSeconds = 0;
+        document.getElementById('recordTimer').innerText = '0:00';
+        voiceInterval = setInterval(() => {
+          voiceSeconds++;
+          const m = Math.floor(voiceSeconds / 60);
+          const s = voiceSeconds % 60;
+          document.getElementById('recordTimer').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+        }, 1000);
+      } catch (err) {
+        showToast('Microphone access denied');
+      }
+    }
+
+    function cancelVoiceRecording() {
+      if (mediaRecorder && mediaRecorder.state !== 'inactive') mediaRecorder.stop();
+      clearInterval(voiceInterval);
+      activeRecording = false;
+      document.getElementById('voiceRecordDock').classList.remove('active');
+      showToast('Recording cancelled');
+    }
+
+    function sendVoiceRecording() {
+      clearInterval(voiceInterval);
+      activeRecording = false;
+      document.getElementById('voiceRecordDock').classList.remove('active');
+
+      if (!mediaRecorder) return;
+
+      mediaRecorder.onstop = async () => {
+        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+        const formData = new FormData();
+        formData.append('file', audioBlob, `voice-${Date.now()}.webm`);
+
+        try {
+          const res = await fetch('/api/upload', { method: 'POST', body: formData });
+          const data = await res.json();
+          if (data.success) {
+            const role = document.getElementById('roleSelector').value;
+            socket.emit('send_message', {
+              id: 'msg-' + Date.now(),
+              conversationId: activeConvId,
+              senderRole: role,
+              type: 'audio',
+              fileUrl: data.fileUrl,
+              time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+          }
+        } catch (e) {
+          showToast('Voice upload failed');
+        }
+      };
+
+      mediaRecorder.stop();
+    }
+
+    /* AUDIO PLAYBACK */
+    function formatTime(sec) {
+      const m = Math.floor(sec / 60);
+      const s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    document.addEventListener('click', function(e) {
+      const playBtn = e.target.closest('.voice-play-btn');
+      const waveform = e.target.closest('.waveform-container');
+
+      if (playBtn) {
+        const player = playBtn.closest('.voice-player');
+        toggleAudioPlayback(player, playBtn);
+      }
+
+      if (waveform) {
+        const player = waveform.closest('.voice-player');
+        const audio = player._audio;
+        if (!audio || !audio.duration) return;
+
+        const rect = waveform.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const seekPct = Math.max(0, Math.min(1, clickX / rect.width));
+        audio.currentTime = seekPct * audio.duration;
+        updateTrackVisuals(player, audio.currentTime, audio.duration);
+      }
+    });
+
+    function toggleAudioPlayback(player, btn) {
+      let audio = player._audio;
+
+      if (!audio) {
+        audio = new Audio(player.dataset.src);
+        player._audio = audio;
+
+        audio.addEventListener('loadedmetadata', () => {
+          player.querySelector('.voice-timestamp').innerText = formatTime(audio.duration);
+        });
+
+        audio.addEventListener('timeupdate', () => {
+          updateTrackVisuals(player, audio.currentTime, audio.duration);
+        });
+
+        audio.addEventListener('ended', () => {
+          btn.querySelector('i').className = 'fa-solid fa-play';
+          updateTrackVisuals(player, 0, audio.duration);
+          activeAudioInstance = null;
+        });
+      }
+
+      if (activeAudioInstance && activeAudioInstance !== audio) {
+        activeAudioInstance.pause();
+        if (activeAudioPlayBtn) activeAudioPlayBtn.querySelector('i').className = 'fa-solid fa-play';
+      }
+
+      const icon = btn.querySelector('i');
+      if (audio.paused) {
+        audio.play();
+        icon.className = 'fa-solid fa-pause';
+        activeAudioInstance = audio;
+        activeAudioPlayBtn = btn;
+      } else {
+        audio.pause();
+        icon.className = 'fa-solid fa-play';
+        activeAudioInstance = null;
+      }
+    }
+
+    function updateTrackVisuals(player, cur, dur) {
+      if (!dur) return;
+      player.querySelector('.waveform-progress').style.width = `${(cur / dur) * 100}%`;
+      player.querySelector('.voice-timestamp').innerText = formatTime(dur - cur);
+    }
+
+    /* ATTACHMENT STAGING */
+    function handleFileSelection(event, type) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      currentAttachment = {
+        file,
+        type,
+        name: file.name,
+        size: (file.size / (1024 * 1024)).toFixed(2) + ' MB'
+      };
+
+      const trayPreview = document.getElementById('trayPreview');
+      if (type === 'media' && file.type.startsWith('image/')) {
+        trayPreview.innerHTML = `<img src="${URL.createObjectURL(file)}" alt="Preview">`;
+      } else {
+        trayPreview.innerHTML = `<i class="fa-solid fa-file-lines text-blue-600"></i>`;
+      }
+
+      document.getElementById('trayFilename').innerText = currentAttachment.name;
+      document.getElementById('trayFilesize').innerText = currentAttachment.size;
+      attachmentTray.style.display = 'flex';
+      event.target.value = '';
+    }
+
+    function clearPendingAttachment() {
+      currentAttachment = null;
+      attachmentTray.style.display = 'none';
+      document.getElementById('trayPreview').innerHTML = '';
+    }
+
+    /* RENT RECEIPT DISPATCH */
+    function openRentModal() { document.getElementById('rentModal').classList.add('show'); }
+    function closeRentModal() { document.getElementById('rentModal').classList.remove('show'); }
+    function submitRentReceipt() {
+      const payload = {
+        id: 'rent-' + Date.now(),
+        conversationId: activeConvId,
+        senderRole: 'Landlord',
+        type: 'widget_rent',
+        amount: document.getElementById('receiptAmount').value.trim(),
+        property: document.getElementById('receiptProperty').value.trim(),
+        period: document.getElementById('receiptPeriod').value.trim(),
+        ref: 'TH-PAY-' + Math.floor(100000 + Math.random() * 900000),
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      socket.emit('send_message', payload);
+      closeRentModal();
+    }
+
+    /* MAINTENANCE TICKET DISPATCH */
+    function openMaintenanceModal() { document.getElementById('maintenanceModal').classList.add('show'); }
+    function closeMaintenanceModal() { document.getElementById('maintenanceModal').classList.remove('show'); }
+    function submitMaintenanceTicket() {
+      const title = document.getElementById('maintTitle').value.trim();
+      if (!title) return;
+
+      const payload = {
+        id: 'maint-' + Date.now(),
+        conversationId: activeConvId,
+        senderRole: document.getElementById('roleSelector').value,
+        type: 'widget_maint',
+        ticketNum: Math.floor(100 + Math.random() * 900),
+        priority: document.getElementById('maintPriority').value,
+        title: title,
+        desc: document.getElementById('maintDesc').value.trim() || 'No description provided.',
+        status: 'Awaiting Review',
+        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      };
+
+      socket.emit('send_message', payload);
+      closeMaintenanceModal();
+      document.getElementById('maintTitle').value = '';
+      document.getElementById('maintDesc').value = '';
+    }
+
+    /* ANNOUNCEMENTS */
+    function openAnnounceModal() { document.getElementById('announceModal').classList.add('show'); }
+    function closeAnnounceModal() { document.getElementById('announceModal').classList.remove('show'); }
+    function submitAnnouncement() {
+      const text = document.getElementById('announceText').value.trim();
+      if (!text) return;
+      socket.emit('broadcast_announcement', { text });
+      closeAnnounceModal();
+      document.getElementById('announceText').value = '';
+    }
+    function dismissBroadcast() {
+      document.getElementById('pinnedBroadcast').classList.remove('show');
+    }
+
+    /* PREVIEW CONTROLS */
+    function openLightbox(src) {
+      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxModal').classList.add('show');
+    }
+    function closeLightbox() { document.getElementById('lightboxModal').classList.remove('show'); }
+
+    function openDocPreview(filename) {
+      document.getElementById('docSheetTitle').innerHTML = `<i class="fa-solid fa-file-pdf"></i> ${filename}`;
+      document.getElementById('docSheetBody').innerHTML = `
+        =======================================================<br/>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TENANCYHUB OFFICIAL DOCUMENT<br/>
+        =======================================================<br/><br/>
+        <strong>DOCUMENT:</strong> ${filename}<br/>
+        <strong>STATUS:</strong> Verified Electronic Record<br/>
+        <strong>DATE:</strong> ${new Date().toLocaleDateString()}<br/><br/>
+        Authorized under TenancyHub Secure Infrastructure.
+      `;
+      document.getElementById('docPreviewModal').classList.add('show');
+    }
+    function closeDocPreview() { document.getElementById('docPreviewModal').classList.remove('show'); }
+
+    /* ACTION MENUS & ROLES */
+    function toggleMenu(e, id) {
+      e.stopPropagation();
+      document.querySelectorAll('.msg-dropdown').forEach(m => { if (m.id !== id) m.classList.remove('show'); });
+      document.getElementById(id)?.classList.toggle('show');
+    }
+    window.addEventListener('click', () => {
+      document.querySelectorAll('.msg-dropdown').forEach(m => m.classList.remove('show'));
+    });
+
+    function pinMessage(id) {
+      const target = document.getElementById(id).querySelector('.bubble, .rent-card, .maintenance-card');
+      const isPinned = target.classList.toggle('is-pinned');
+      showToast(isPinned ? 'Message pinned' : 'Message unpinned');
+    }
+    function copyMessage(id) {
+      const text = document.getElementById(id).querySelector('.bubble, .rent-card, .maintenance-card').innerText;
+      navigator.clipboard.writeText(text);
+      showToast('Copied to clipboard');
+    }
+    function deleteMessage(id) {
+      const el = document.getElementById(id).querySelector('.bubble-row');
+      el.innerHTML = '<div class="bubble deleted"><i class="fa-solid fa-ban"></i> This item was deleted</div>';
+      showToast('Item deleted');
+    }
+
+    function switchRole(role) {
+      const p = document.getElementById('profileBadge');
+      const btnRent = document.getElementById('btnSendRentCard');
+      const btnAnnounce = document.getElementById('btnAnnounce');
+
+      if (role === 'Tenant') {
+        p.innerHTML = `<i class="fa-solid fa-circle-check text-green-400"></i> Mutiu Kamalideen (Tenant)`;
+        document.getElementById('activeRecipientName').innerText = 'Estate Management';
+        btnRent.style.display = 'none';
+        btnAnnounce.style.display = 'none';
+      } else {
+        p.innerHTML = `<i class="fa-solid fa-circle-check text-green-400"></i> Mutiu Kamalideen (${role})`;
+        document.getElementById('activeRecipientName').innerText = 'Mutiu Kamalideen';
+        btnRent.style.display = 'flex';
+        btnAnnounce.style.display = 'flex';
+      }
+      renderActiveConversation();
+      showToast(`Switched view to ${role} Portal`);
+    }
+
+    function switchConvTab(btn, tab) {
+      document.querySelectorAll('.conv-tabs .tab-pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      document.querySelectorAll('#convList .conv-item').forEach(item => {
+        const isUnread = item.getAttribute('data-unread') === 'true';
+        const isPinned = item.getAttribute('data-pinned') === 'true';
+
+        if (tab === 'all') item.style.display = 'flex';
+        else if (tab === 'unread') item.style.display = isUnread ? 'flex' : 'none';
+        else if (tab === 'pinned') item.style.display = isPinned ? 'flex' : 'none';
+      });
+    }
+
+    function filterConversations() {
+      const query = document.getElementById('convSearch').value.trim().toLowerCase();
+      document.querySelectorAll('#chatFeed .msg-group').forEach(group => {
+        const textTarget = group.querySelector('.bubble, .maintenance-card, .rent-card');
+        if (!textTarget) return;
+        const rawText = textTarget.innerText.toLowerCase();
+        group.style.display = (!query || rawText.includes(query)) ? 'flex' : 'none';
+      });
+    }
+
+    function closeActiveChat() {
+      document.getElementById('activeChatWrapper').style.display = 'none';
+      document.getElementById('chatEmptyState').classList.add('show');
+      document.querySelectorAll('#convList .conv-item').forEach(item => item.classList.remove('active'));
+    }
+
+    function addReaction(msgId, emoji) {
+      const container = document.getElementById(`container-${msgId}`);
+      if (!container) return;
+      let badge = container.querySelector('.reaction-badge');
+      if (!badge) {
+        badge = document.createElement('div');
+        badge.className = 'reaction-badge';
+        container.appendChild(badge);
+      }
+      badge.innerHTML = `${emoji} 1`;
+    }
+
+    function removeReaction(msgId) {
+      document.getElementById(`container-${msgId}`)?.querySelector('.reaction-badge')?.remove();
+    }
+
+    let toastTimer;
+    function showToast(msg) {
+      const toast = document.getElementById('toastMsg');
+      toast.innerText = msg;
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+    }
+  </script>
+</body>
+</html>
