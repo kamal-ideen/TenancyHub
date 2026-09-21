@@ -167,6 +167,7 @@ function generateOtp() {
 app.use(helmet({ contentSecurityPolicy: false }));
 
 app.use(express.json());
+app.get("/", (req, res) => res.sendFile(path.join(__dirname, "public", "login.html")));
 app.use(express.static(path.join(__dirname, "public")));
 const SESSION_SECRET = process.env.SESSION_SECRET || "tenancyhub-local-dev-secret";
 if (!process.env.SESSION_SECRET) {
@@ -2952,3 +2953,5 @@ app.use((err, req, res, next) => {
 server.listen(PORT, () => {
   console.log(`TenancyHub is running! Open http://localhost:${PORT} in your browser.`);
 });
+
+
