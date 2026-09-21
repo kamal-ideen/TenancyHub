@@ -72,6 +72,25 @@ io.on('connection', (socket) => {
 });
 const PORT = process.env.PORT || 3000;
 const DATA_FILE = path.join(__dirname, "data.json");
+if (!fs.existsSync(DATA_FILE)) {
+  fs.writeFileSync(
+    DATA_FILE,
+    JSON.stringify({
+      users: [],
+      properties: [],
+      tenants: [],
+      maintenanceRequests: [],
+      agreements: [],
+      agents: [],
+      collections: [],
+      payments: [],
+      notifications: [],
+      managers: [],
+      messages: [],
+      activityLog: []
+    }, null, 2)
+  );
+}
 const UPLOADS_DIR = path.join(__dirname, "public", "uploads");
 
 fs.mkdirSync(UPLOADS_DIR, { recursive: true });
