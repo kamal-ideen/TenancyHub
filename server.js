@@ -54,6 +54,7 @@ try { QRCode = require("qrcode"); } catch (e) { /* not installed yet — run npm
 const googleClient = process.env.GOOGLE_CLIENT_ID ? new OAuth2Client(process.env.GOOGLE_CLIENT_ID) : null;
 
 const app = express();
+app.set('trust proxy', 1);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: { origin: '*' }
@@ -2953,5 +2954,8 @@ app.use((err, req, res, next) => {
 server.listen(PORT, () => {
   console.log(`TenancyHub is running! Open http://localhost:${PORT} in your browser.`);
 });
+
+
+
 
 
