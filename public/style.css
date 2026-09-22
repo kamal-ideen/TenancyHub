@@ -2595,3 +2595,1900 @@ html, body {
   padding: 0 20px !important;
   flex-shrink: 0 !important;
 }
+
+/* TenancyHub logo */
+.brand-logo {
+  display: block;
+  width: 180px;
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.auth-brand {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.auth-brand .brand-logo {
+  width: 220px;
+  margin-bottom: 0;
+}
+
+/* TenancyHub dark login and register design */
+.auth-shell,
+.auth-page {
+  background: #080d18 !important;
+  color: #f1f5ff !important;
+}
+
+.auth-visual {
+  background: #080d18 !important;
+  color: #f1f5ff !important;
+}
+
+.auth-visual h1,
+.auth-visual p,
+.auth-visual li {
+  color: #f1f5ff !important;
+}
+
+.auth-form-side {
+  background: #080d18 !important;
+}
+
+.auth-card {
+  background: #101827 !important;
+  color: #f1f5ff !important;
+  border: 1px solid #243650 !important;
+  box-shadow: 0 0 35px rgba(37, 99, 235, 0.18) !important;
+}
+
+.auth-card label,
+.auth-tagline,
+.auth-switch,
+.auth-divider {
+  color: #dbeafe !important;
+}
+
+.auth-card input {
+  background: #0b1220 !important;
+  color: #ffffff !important;
+  border: 1px solid #2d4260 !important;
+}
+
+.auth-card input:focus {
+  border-color: #3b82f6 !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18);
+}
+
+.auth-card a,
+.forgot-link {
+  color: #60a5fa !important;
+}
+
+.auth-visual li .check {
+  background: rgba(59, 130, 246, 0.2) !important;
+  color: #60a5fa !important;
+}
+
+.auth-card .btn-primary {
+  background: linear-gradient(90deg, #2563eb, #06b6d4) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.auth-brand {
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.auth-brand .brand-logo {
+  max-width: 100%;
+  height: auto;
+}
+
+
+/* Shared TenancyHub login and register theme */
+:root {
+  --auth-bg: #080d18;
+  --auth-panel: #101827;
+  --auth-input: #0b1220;
+  --auth-border: #263b59;
+  --auth-text: #f1f5ff;
+  --auth-blue: #2563eb;
+  --auth-cyan: #06b6d4;
+}
+
+.auth-shell,
+.auth-page,
+.auth-visual,
+.auth-form-side {
+  background-color: var(--auth-bg) !important;
+  color: var(--auth-text);
+}
+
+.auth-visual {
+  background-image: radial-gradient(
+    ellipse at 15% 45%,
+    rgba(37, 99, 235, 0.17),
+    transparent 55%
+  ) !important;
+}
+
+.auth-visual h1,
+.auth-visual p,
+.auth-visual li {
+  color: var(--auth-text);
+}
+
+.auth-card {
+  background: var(--auth-panel) !important;
+  color: var(--auth-text);
+  border: 1px solid var(--auth-border) !important;
+  box-shadow: 0 0 38px rgba(37, 99, 235, 0.16) !important;
+}
+
+.auth-card label,
+.auth-tagline,
+.auth-switch,
+.auth-divider {
+  color: #dbeafe;
+}
+
+.auth-card input {
+  background: var(--auth-input) !important;
+  color: #fff !important;
+  border: 1px solid var(--auth-border) !important;
+}
+
+.auth-card input:focus {
+  border-color: #3b82f6 !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+}
+
+.auth-card a,
+.auth-card .forgot-link {
+  color: #60a5fa !important;
+}
+
+.auth-visual li .check {
+  background: rgba(37, 99, 235, 0.2) !important;
+  color: #60a5fa !important;
+}
+
+.auth-card .btn-primary {
+  background: linear-gradient(
+    90deg,
+    var(--auth-blue),
+    var(--auth-cyan)
+  ) !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+.auth-card .btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+.auth-brand {
+  justify-content: center;
+}
+
+.auth-brand .brand-logo {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 899px) {
+  .auth-visual {
+    padding: 32px 24px;
+  }
+
+  .auth-form-side {
+    padding: 20px;
+  }
+
+  .auth-card {
+    padding: 28px 22px;
+  }
+}
+
+
+/* Center and balance the login/register sections */
+.auth-shell {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  padding: 40px 5%;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+.auth-visual {
+  flex: 1 1 0;
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  padding: 32px;
+  box-sizing: border-box;
+}
+
+.auth-visual h1,
+.auth-visual p,
+.auth-visual ul {
+  width: 100%;
+  max-width: 480px;
+}
+
+.auth-visual ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+.auth-form-side {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  box-sizing: border-box;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Keep the form and introduction balanced on smaller screens */
+@media (max-width: 899px) {
+  .auth-shell {
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px 16px;
+  }
+
+  .auth-visual {
+    width: 100%;
+    padding: 24px 12px;
+  }
+
+  .auth-form-side {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .auth-card {
+    max-width: 480px;
+  }
+}
+
+
+/* Fixed introduction + independently scrolling form */
+.auth-shell {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 24px;
+  min-height: 100vh;
+  height: 100vh;
+  padding: 0 5%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Left side stays still */
+.auth-visual {
+  position: sticky;
+  top: 0;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100vh;
+  box-sizing: border-box;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 70px 32px;
+  text-align: left;
+}
+
+/* Keep the introduction content together */
+.auth-visual h1,
+.auth-visual p,
+.auth-visual ul {
+  width: 100%;
+  max-width: 480px;
+}
+
+.auth-visual h1 {
+  margin-top: 0;
+  margin-bottom: 22px;
+}
+
+.auth-visual p {
+  margin-bottom: 24px;
+  line-height: 1.7;
+}
+
+.auth-visual ul {
+  margin-top: 0;
+  padding-left: 0;
+  list-style: none;
+}
+
+.auth-visual li {
+  margin-bottom: 14px;
+}
+
+/* Right side scrolls independently */
+.auth-form-side {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100vh;
+  box-sizing: border-box;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 40px 24px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Keep the form centered horizontally with vertical breathing room */
+.auth-form-side .auth-card {
+  flex: 0 0 auto;
+  width: 100%;
+  max-width: 440px;
+  margin: auto 0;
+  box-sizing: border-box;
+}
+
+/* Mobile: stack normally; don't trap scrolling in a panel */
+@media (max-width: 899px) {
+  .auth-shell {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    padding: 24px 16px;
+    overflow: visible;
+    gap: 20px;
+  }
+
+  .auth-visual {
+    position: static;
+    height: auto;
+    min-height: 320px;
+    padding: 48px 12px;
+  }
+
+  .auth-form-side {
+    height: auto;
+    overflow: visible;
+    padding: 12px;
+  }
+
+  .auth-form-side .auth-card {
+    margin: 0 auto;
+    max-width: 480px;
+  }
+}
+
+
+/* Unified TenancyHub glow for login and register */
+.auth-shell {
+  background:
+    radial-gradient(ellipse at 0% 45%, rgba(0, 92, 255, .24), transparent 42%),
+    radial-gradient(ellipse at 100% 10%, rgba(0, 174, 255, .14), transparent 35%),
+    linear-gradient(135deg, #06132d 0%, #07152b 48%, #030b1a 100%) !important;
+}
+
+/* Keep both columns transparent so the same background shows through */
+.auth-visual,
+.auth-form-side {
+  background: transparent !important;
+}
+
+/* Subtle blue glow around each form card */
+.auth-card {
+  background: rgba(7, 23, 48, .88) !important;
+  border: 1px solid rgba(0, 153, 255, .72) !important;
+  box-shadow:
+    0 0 28px rgba(0, 100, 255, .16),
+    inset 0 0 24px rgba(0, 90, 220, .06) !important;
+  backdrop-filter: blur(12px);
+}
+
+/* Consistent cyan links and check icons */
+.auth-card a,
+.auth-card .forgot-link {
+  color: #16baff !important;
+}
+
+.auth-visual li .check {
+  background: linear-gradient(135deg, #087bff, #00c8e8) !important;
+  color: #fff !important;
+}
+
+/* Matching gradient buttons on both pages */
+.auth-card .btn-primary {
+  background: linear-gradient(100deg, #0865f5, #08c2d8) !important;
+  color: #fff !important;
+  border: 0 !important;
+  box-shadow: 0 5px 20px rgba(0, 153, 255, .18);
+}
+
+/* Matching focus color for form controls */
+.auth-card input:focus,
+.auth-card select:focus {
+  border-color: #08baff !important;
+  box-shadow: 0 0 0 3px rgba(8, 186, 255, .16) !important;
+  outline: none;
+}
+
+
+/* TenancyHub: final split-screen login/register layout */
+.auth-shell {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  height: 100vh;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+
+  background:
+    radial-gradient(ellipse at 0% 50%, rgba(0, 95, 255, .22), transparent 45%),
+    radial-gradient(ellipse at 100% 10%, rgba(0, 174, 255, .13), transparent 38%),
+    linear-gradient(135deg, #06132d, #07152b 52%, #030b1a) !important;
+}
+
+/* Left introduction: fixed and vertically centered */
+.auth-visual {
+  position: relative !important;
+  top: auto !important;
+  height: 100vh;
+  min-height: 0;
+  width: 100%;
+  padding: 48px clamp(28px, 5vw, 80px) !important;
+  box-sizing: border-box;
+
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center !important;
+  align-items: center;
+  background: transparent !important;
+}
+
+/* Keep intro text in a comfortable column */
+.auth-visual h1,
+.auth-visual p,
+.auth-visual ul {
+  width: 100%;
+  max-width: 500px;
+}
+
+.auth-visual h1 {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.auth-visual p {
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.auth-visual ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+/* Right form: scroll independently */
+.auth-form-side {
+  height: 100vh;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 36px clamp(20px, 3vw, 48px) !important;
+
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+
+  background: transparent !important;
+}
+
+/* Hide the visible scrollbar while keeping scrolling enabled */
+.auth-form-side {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.auth-form-side::-webkit-scrollbar {
+  display: none;
+}
+
+.auth-form-side .auth-card {
+  width: 100%;
+  max-width: 480px;
+  flex: 0 0 auto;
+  margin: auto 0;
+  box-sizing: border-box;
+
+  background: rgba(7, 23, 48, .9) !important;
+  border: 1px solid rgba(0, 153, 255, .72) !important;
+  box-shadow:
+    0 0 32px rgba(0, 100, 255, .18),
+    inset 0 0 24px rgba(0, 90, 220, .06) !important;
+  backdrop-filter: blur(12px);
+}
+
+/* Match form controls and dropdowns */
+.auth-card input,
+.auth-card select {
+  background-color: #0b1830 !important;
+  color: #f1f5ff !important;
+  border: 1px solid #24517c !important;
+}
+
+.auth-card input:focus,
+.auth-card select:focus {
+  border-color: #08baff !important;
+  box-shadow: 0 0 0 3px rgba(8, 186, 255, .16) !important;
+  outline: none;
+}
+
+/* Unified cyan links and blue-to-cyan buttons */
+.auth-card a,
+.auth-card .forgot-link {
+  color: #16baff !important;
+}
+
+.auth-card .btn-primary {
+  background: linear-gradient(100deg, #0865f5, #08c2d8) !important;
+  color: #fff !important;
+  border: 0 !important;
+  box-shadow: 0 5px 20px rgba(0, 153, 255, .18);
+}
+
+/* Mobile layout: stack and allow normal page scrolling */
+@media (max-width: 899px) {
+  .auth-shell {
+    display: flex !important;
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .auth-visual {
+    height: auto;
+    min-height: 340px;
+    padding: 48px 24px !important;
+  }
+
+  .auth-form-side {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+    padding: 24px 16px !important;
+  }
+
+  .auth-form-side .auth-card {
+    margin: 0 auto;
+  }
+}
+
+
+/* TenancyHub: balanced fixed-left / scrollable-right layout */
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+.auth-shell {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+  gap: 0 !important;
+
+  width: 100%;
+  height: 100vh;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Fixed left introduction */
+.auth-visual {
+  position: relative !important;
+  height: 100%;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center !important;
+
+  padding: 56px clamp(28px, 4vw, 64px) !important;
+  background: transparent !important;
+}
+
+.auth-visual h1,
+.auth-visual p,
+.auth-visual ul {
+  width: 100%;
+  max-width: 460px;
+}
+
+.auth-visual h1 {
+  margin-top: 0;
+}
+
+.auth-visual p {
+  line-height: 1.7;
+  margin-bottom: 24px;
+}
+
+.auth-visual ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+/* Right form scrolls independently */
+.auth-form-side {
+  height: 100%;
+  min-height: 0;
+  width: 100%;
+  box-sizing: border-box;
+
+  display: flex !important;
+  justify-content: center;
+  align-items: flex-start !important;
+
+  padding: 32px 24px !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  background: transparent !important;
+
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.auth-form-side::-webkit-scrollbar {
+  display: none;
+}
+
+.auth-form-side .auth-card {
+  width: 100%;
+  max-width: 480px;
+  flex: 0 0 auto;
+  margin: 0 auto 24px;
+  box-sizing: border-box;
+}
+
+/* Smaller screens: allow normal page scrolling */
+@media (max-width: 899px) {
+  .auth-shell {
+    display: flex !important;
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
+
+  .auth-visual {
+    height: auto;
+    min-height: 320px;
+    padding: 48px 24px !important;
+  }
+
+  .auth-form-side {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    padding: 20px 16px !important;
+  }
+
+  .auth-form-side .auth-card {
+    margin: 0 auto 24px;
+  }
+}
+
+.auth-hero-logo {
+  display: block;
+  width: 420px;
+  max-width: 90%;
+  height: auto;
+  margin: 0 0 36px;
+  object-fit: contain;
+}
+
+@media (max-width: 899px) {
+  .auth-hero-logo {
+    width: 340px;
+    margin-bottom: 28px;
+  }
+}
+
+/* Final TenancyHub auth layout polish */
+
+@media (min-width: 900px) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    overflow: hidden !important;
+  }
+
+  .auth-shell {
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+    overflow: hidden !important;
+  }
+
+  /* LEFT: one compact centered group */
+  .auth-visual {
+    height: 100vh;
+    min-height: 0;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center !important;
+    align-items: flex-start !important;
+    box-sizing: border-box;
+    padding: 40px clamp(40px, 6vw, 90px) !important;
+    text-align: left;
+  }
+
+  .auth-visual > * {
+    margin-top: 0 !important;
+  }
+
+  .auth-hero-logo {
+    display: block;
+    width: 390px;
+    max-width: 100%;
+    height: auto;
+    margin: 0 0 22px 0 !important;
+    object-fit: contain;
+
+    /* Helps the dark PNG background blend into the page */
+    mix-blend-mode: lighten;
+  }
+
+  .auth-visual p {
+    width: 100%;
+    max-width: 510px;
+    margin: 0 0 22px 0 !important;
+    line-height: 1.7;
+  }
+
+  .auth-visual ul {
+    width: 100%;
+    max-width: 510px;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none;
+  }
+
+  .auth-visual li {
+    margin: 0 0 14px 0 !important;
+  }
+
+  .auth-visual li:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  /* RIGHT: only this section scrolls */
+  .auth-form-side {
+    height: 100vh;
+    min-height: 0;
+    box-sizing: border-box;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    padding: 32px clamp(24px, 4vw, 56px) !important;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .auth-form-side::-webkit-scrollbar {
+    width: 0;
+    display: none;
+  }
+
+  .auth-form-side .auth-card {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto 32px auto !important;
+  }
+}
+
+/* Mobile */
+@media (max-width: 899px) {
+  .auth-hero-logo {
+    width: 340px;
+    max-width: 90%;
+    margin: 0 auto 24px !important;
+    mix-blend-mode: lighten;
+  }
+
+  .auth-visual p {
+    margin: 0 0 22px 0 !important;
+  }
+
+  .auth-visual ul {
+    margin: 0 !important;
+  }
+}
+
+/* Center both auth sections and tighten left-side spacing */
+
+@media (min-width: 900px) {
+
+  .auth-shell {
+    grid-template-columns: 1fr 1fr !important;
+    align-items: center !important;
+    justify-items: center !important;
+  }
+
+  /* Center the complete left content group */
+  .auth-visual {
+    width: 100% !important;
+    height: 100vh !important;
+    padding: 30px 40px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    text-align: left !important;
+    box-sizing: border-box;
+  }
+
+  .auth-visual > * {
+    width: 100% !important;
+    max-width: 500px !important;
+  }
+
+  /* Logo */
+  .auth-hero-logo {
+    width: 390px !important;
+    max-width: 90% !important;
+    height: auto !important;
+
+    margin: 0 0 8px 0 !important;
+    align-self: center !important;
+  }
+
+  /* Paragraph immediately below logo */
+  .auth-visual p {
+    margin: 0 0 18px 0 !important;
+    line-height: 1.6 !important;
+  }
+
+  /* Benefits */
+  .auth-visual ul {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .auth-visual li {
+    margin-bottom: 12px !important;
+  }
+
+  /* Center right card in its half */
+  .auth-form-side {
+    width: 100% !important;
+    height: 100vh !important;
+    padding: 28px 40px !important;
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    box-sizing: border-box;
+  }
+
+  .auth-form-side .auth-card {
+    width: 100% !important;
+    max-width: 480px !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* Fix right auth panel: top-aligned card with internal scrolling */
+
+@media (min-width: 900px) {
+  .auth-form-side {
+    height: 100vh !important;
+    min-height: 0 !important;
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: flex-start !important;
+
+    padding: 32px 40px !important;
+    box-sizing: border-box;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .auth-form-side::-webkit-scrollbar {
+    display: none;
+    width: 0;
+  }
+
+  .auth-form-side .auth-card {
+    width: 100% !important;
+    max-width: 480px !important;
+
+    margin: 0 auto 32px !important;
+    flex: 0 0 auto !important;
+  }
+}
+
+/* Final left-side positioning */
+@media (min-width: 900px) {
+
+  .auth-visual {
+    justify-content: center !important;
+    align-items: center !important;
+    padding: 20px 40px !important;
+  }
+
+  /* Treat logo + text + benefits as one compact group */
+  .auth-visual .auth-hero-logo {
+    width: 390px !important;
+    max-width: 90% !important;
+    height: auto !important;
+
+    /* Pull the following paragraph closer */
+    margin-top: 0 !important;
+    margin-bottom: -18px !important;
+
+    align-self: center !important;
+  }
+
+  .auth-visual p {
+    max-width: 510px !important;
+    margin-top: 0 !important;
+    margin-bottom: 18px !important;
+    line-height: 1.6 !important;
+  }
+
+  .auth-visual ul {
+    max-width: 510px !important;
+    margin-top: 0 !important;
+    padding: 0 !important;
+  }
+
+  .auth-visual li {
+    margin-bottom: 12px !important;
+  }
+}
+
+/* =========================================
+   TENANCYHUB FINAL AUTH DESIGN
+   Login + Register
+   ========================================= */
+
+html,
+body {
+  margin: 0 !important;
+  width: 100%;
+  min-height: 100%;
+  background: #020b1b !important;
+}
+
+@media (min-width: 900px) {
+
+  body {
+    height: 100vh;
+    overflow: hidden !important;
+  }
+
+  /* Main two-column background */
+  .auth-shell {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    width: 100%;
+    height: 100vh;
+    min-height: 100vh;
+
+    padding: 0 !important;
+    margin: 0 !important;
+    gap: 0 !important;
+
+    overflow: hidden !important;
+
+    background:
+      radial-gradient(
+        circle at 8% 50%,
+        rgba(0, 91, 255, 0.28),
+        transparent 40%
+      ),
+      radial-gradient(
+        circle at 92% 8%,
+        rgba(0, 191, 255, 0.16),
+        transparent 34%
+      ),
+      linear-gradient(
+        135deg,
+        #06142f 0%,
+        #061a3d 45%,
+        #020b1b 100%
+      ) !important;
+  }
+
+  /* =====================================
+     LEFT SIDE
+     ===================================== */
+
+  .auth-visual {
+    position: relative !important;
+
+    width: 100% !important;
+    height: 100vh !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    justify-content: center !important;
+    align-items: center !important;
+
+    box-sizing: border-box;
+
+    padding: 40px 50px !important;
+
+    text-align: left !important;
+
+    background: transparent !important;
+  }
+
+  .auth-visual::before {
+    content: "";
+    position: absolute;
+
+    width: 420px;
+    height: 420px;
+
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background: radial-gradient(
+      circle,
+      rgba(0, 119, 255, 0.11),
+      transparent 70%
+    );
+
+    pointer-events: none;
+  }
+
+  /* Keep all left content together */
+  .auth-visual > * {
+    position: relative;
+    z-index: 1;
+
+    width: 100%;
+    max-width: 520px;
+  }
+
+  /* Actual logo */
+  .auth-hero-logo {
+    display: block;
+
+    width: 440px !important;
+    max-width: 100% !important;
+
+    height: auto !important;
+
+    margin: 0 0 16px 0 !important;
+
+    align-self: center !important;
+
+    object-fit: contain;
+
+    mix-blend-mode: normal !important;
+
+    filter:
+      drop-shadow(0 0 10px rgba(0, 170, 255, 0.14));
+  }
+
+  /* Left description */
+  .auth-visual p {
+    width: 100% !important;
+    max-width: 520px !important;
+
+    margin: 0 0 22px 0 !important;
+
+    line-height: 1.7 !important;
+
+    color: #e8f1ff !important;
+  }
+
+  /* Benefits */
+  .auth-visual ul {
+    width: 100% !important;
+    max-width: 520px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    list-style: none !important;
+  }
+
+  .auth-visual li {
+    display: flex;
+    align-items: center;
+
+    margin: 0 0 14px 0 !important;
+
+    color: #edf5ff !important;
+  }
+
+  .auth-visual li:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .auth-visual .check {
+    flex: 0 0 auto;
+    margin-right: 11px;
+  }
+
+  /* =====================================
+     RIGHT SIDE
+     ===================================== */
+
+  .auth-form-side {
+    width: 100% !important;
+    height: 100vh !important;
+
+    min-height: 0 !important;
+
+    box-sizing: border-box;
+
+    display: flex !important;
+
+    justify-content: center !important;
+
+    align-items: flex-start !important;
+
+    padding: 32px 44px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    background: transparent !important;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .auth-form-side::-webkit-scrollbar {
+    display: none;
+    width: 0;
+  }
+
+  /* Glass form card */
+  .auth-form-side .auth-card {
+    width: 100% !important;
+
+    max-width: 480px !important;
+
+    flex: 0 0 auto !important;
+
+    margin: 0 auto 32px auto !important;
+
+    box-sizing: border-box;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(7, 27, 58, 0.92),
+        rgba(3, 16, 36, 0.96)
+      ) !important;
+
+    border: 1px solid rgba(0, 174, 255, 0.7) !important;
+
+    border-radius: 20px !important;
+
+    box-shadow:
+      0 0 22px rgba(0, 128, 255, 0.14),
+      0 0 70px rgba(0, 102, 255, 0.08),
+      inset 0 0 35px rgba(0, 153, 255, 0.045) !important;
+
+    backdrop-filter: blur(14px);
+
+    color: #f1f7ff !important;
+  }
+
+  /* Center ONLY the login card */
+  .auth-form-side:has(#loginForm) {
+    align-items: center !important;
+  }
+
+  .auth-form-side:has(#loginForm) .auth-card {
+    margin: 0 auto !important;
+  }
+
+  /* Register stays top-aligned so it can scroll */
+  .auth-form-side:has(#registerForm) {
+    align-items: flex-start !important;
+  }
+
+  /* =====================================
+     FORM CONTROLS
+     ===================================== */
+
+  .auth-card input,
+  .auth-card select {
+    width: 100% !important;
+
+    background: #061329 !important;
+
+    color: #f5f9ff !important;
+
+    border: 1px solid #24517d !important;
+
+    border-radius: 10px !important;
+
+    box-sizing: border-box;
+  }
+
+  .auth-card input:focus,
+  .auth-card select:focus {
+    border-color: #08c7ff !important;
+
+    outline: none !important;
+
+    box-shadow:
+      0 0 0 3px rgba(8, 199, 255, 0.12),
+      0 0 16px rgba(0, 151, 255, 0.12) !important;
+  }
+
+  /* Primary buttons */
+  .auth-card .btn-primary {
+    width: 100% !important;
+
+    background:
+      linear-gradient(
+        100deg,
+        #1168ff 0%,
+        #078ff4 48%,
+        #08c7d8 100%
+      ) !important;
+
+    color: #ffffff !important;
+
+    border: none !important;
+
+    border-radius: 10px !important;
+
+    box-shadow:
+      0 8px 24px rgba(0, 144, 255, 0.18) !important;
+
+    transition:
+      transform 0.2s ease,
+      filter 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+
+  .auth-card .btn-primary:hover {
+    filter: brightness(1.08);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+      0 10px 28px rgba(0, 174, 255, 0.25) !important;
+  }
+
+  /* Links */
+  .auth-card a,
+  .auth-card .forgot-link {
+    color: #15c4ff !important;
+  }
+
+  /* Check icons */
+  .auth-visual .check {
+    background:
+      linear-gradient(
+        135deg,
+        #087aff,
+        #05c8e7
+      ) !important;
+
+    color: #ffffff !important;
+
+    box-shadow:
+      0 0 12px rgba(0, 157, 255, 0.15);
+  }
+}
+
+/* =========================================
+   MOBILE
+   ========================================= */
+
+@media (max-width: 899px) {
+
+  body {
+    overflow-x: hidden;
+  }
+
+  .auth-shell {
+    display: flex !important;
+    flex-direction: column !important;
+
+    height: auto !important;
+    min-height: 100vh;
+
+    overflow: visible !important;
+  }
+
+  .auth-visual {
+    min-height: 360px !important;
+
+    padding: 48px 24px !important;
+
+    justify-content: center !important;
+    align-items: center !important;
+  }
+
+  .auth-hero-logo {
+    width: 360px !important;
+    max-width: 92% !important;
+
+    margin-bottom: 16px !important;
+  }
+
+  .auth-form-side {
+    height: auto !important;
+
+    overflow: visible !important;
+
+    padding: 24px 16px !important;
+  }
+
+  .auth-form-side .auth-card {
+    max-width: 480px !important;
+
+    margin: 0 auto 24px !important;
+  }
+}
+
+/* TenancyHub animated background glow */
+@media (min-width: 900px) {
+  .auth-shell {
+    position: relative !important;
+    isolation: isolate;
+    background:
+      radial-gradient(circle at 5% 45%, rgba(0, 102, 255, .28), transparent 35%),
+      radial-gradient(circle at 95% 10%, rgba(0, 195, 255, .18), transparent 30%),
+      linear-gradient(135deg, #04112a 0%, #061a3f 48%, #020a18 100%) !important;
+  }
+
+  .auth-shell::before,
+  .auth-shell::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .7;
+  }
+
+  /* Blue diagonal light streak */
+  .auth-shell::before {
+    width: 520px;
+    height: 2px;
+    left: -80px;
+    bottom: 90px;
+    background: linear-gradient(90deg, transparent, #08caff, transparent);
+    box-shadow: 0 0 18px rgba(8, 202, 255, .7);
+    transform: rotate(24deg);
+    animation: authStreak 6s ease-in-out infinite alternate;
+  }
+
+  /* Upper-right glow */
+  .auth-shell::after {
+    width: 420px;
+    height: 180px;
+    right: -120px;
+    top: -60px;
+    background: radial-gradient(
+      ellipse,
+      rgba(0, 119, 255, .35),
+      transparent 70%
+    );
+    filter: blur(25px);
+    animation: authGlow 5s ease-in-out infinite alternate;
+  }
+
+  .auth-visual,
+  .auth-form-side {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Gentle entrance animation */
+  .auth-visual .auth-hero-logo,
+  .auth-visual p,
+  .auth-visual ul {
+    animation: authFadeUp .7s ease both;
+  }
+
+  .auth-visual p {
+    animation-delay: .12s;
+  }
+
+  .auth-visual ul {
+    animation-delay: .22s;
+  }
+
+  .auth-card {
+    animation: authCardIn .7s ease both;
+  }
+}
+
+@keyframes authStreak {
+  from {
+    transform: translateX(-35px) rotate(24deg);
+    opacity: .35;
+  }
+
+  to {
+    transform: translateX(70px) rotate(24deg);
+    opacity: .8;
+  }
+}
+
+@keyframes authGlow {
+  from {
+    transform: translateX(-20px);
+    opacity: .45;
+  }
+
+  to {
+    transform: translateX(20px);
+    opacity: .85;
+  }
+}
+
+@keyframes authFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes authCardIn {
+  from {
+    opacity: 0;
+    transform: translateX(25px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Final left-side alignment and spacing */
+@media (min-width: 900px) {
+
+  .auth-visual {
+    height: 100vh !important;
+    width: 100% !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    /* Center the whole group vertically */
+    justify-content: center !important;
+
+    /* Center the group horizontally */
+    align-items: center !important;
+
+    box-sizing: border-box;
+
+    padding: 40px !important;
+
+    text-align: left !important;
+
+    /* Controlled spacing between logo, text and benefits */
+    gap: 22px !important;
+  }
+
+  /* All three elements use one centered content width */
+  .auth-visual .auth-hero-logo,
+  .auth-visual p,
+  .auth-visual ul {
+    width: 100% !important;
+    max-width: 520px !important;
+
+    margin: 0 !important;
+  }
+
+  /* Logo */
+  .auth-visual .auth-hero-logo {
+    width: 430px !important;
+    max-width: 90% !important;
+    height: auto !important;
+
+    align-self: center !important;
+
+    object-fit: contain;
+
+    mix-blend-mode: normal !important;
+  }
+
+  /* Description */
+  .auth-visual p {
+    line-height: 1.7 !important;
+  }
+
+  /* Benefits */
+  .auth-visual ul {
+    padding: 0 !important;
+    list-style: none !important;
+  }
+
+  .auth-visual li {
+    margin: 0 0 14px 0 !important;
+  }
+
+  .auth-visual li:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+/* FINAL VISUAL BALANCE FOR LOGIN + REGISTER */
+@media (min-width: 900px) {
+
+  .auth-shell {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    max-width: 1280px !important;
+    margin: 0 auto !important;
+  }
+
+  /* LEFT SIDE */
+  .auth-visual {
+    width: 100% !important;
+    height: 100vh !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+
+    padding: 40px 55px !important;
+    box-sizing: border-box !important;
+  }
+
+  .auth-visual .auth-hero-logo {
+    width: 400px !important;
+    max-width: 100% !important;
+    height: auto !important;
+
+    margin: 0 0 26px 0 !important;
+
+    align-self: center !important;
+  }
+
+  .auth-visual p,
+  .auth-visual ul {
+    width: 100% !important;
+    max-width: 470px !important;
+  }
+
+  .auth-visual p {
+    margin: 0 0 22px 0 !important;
+    line-height: 1.7 !important;
+  }
+
+  .auth-visual ul {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* RIGHT SIDE */
+  .auth-form-side {
+    width: 100% !important;
+    height: 100vh !important;
+
+    display: flex !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    padding: 32px 50px !important;
+  }
+
+  .auth-form-side .auth-card {
+    width: 100% !important;
+    max-width: 460px !important;
+  }
+
+  /* LOGIN: vertically centered */
+  .auth-form-side:has(#loginForm) {
+    align-items: center !important;
+  }
+
+  /* REGISTER: starts near the top and scrolls */
+  .auth-form-side:has(#registerForm) {
+    align-items: flex-start !important;
+  }
+}
+
+/* ===== FINAL AUTH LAYOUT FIX ===== */
+
+@media (min-width: 900px) {
+
+  html,
+  body {
+    margin: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+  }
+
+  /* Remove the unwanted black side margins */
+  .auth-shell {
+    width: 100vw !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: grid !important;
+    grid-template-columns: 50% 50% !important;
+
+    height: 100vh !important;
+    min-height: 100vh !important;
+
+    overflow: hidden !important;
+  }
+
+  /* LEFT SIDE */
+  .auth-visual {
+    width: 100% !important;
+    height: 100vh !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    justify-content: center !important;
+    align-items: center !important;
+
+    padding: 0 60px !important;
+    box-sizing: border-box !important;
+
+    background: transparent !important;
+  }
+
+  .auth-visual .auth-hero-logo,
+  .auth-visual p,
+  .auth-visual ul {
+    width: 100% !important;
+    max-width: 500px !important;
+  }
+
+  /* Logo */
+  .auth-visual .auth-hero-logo {
+    width: 400px !important;
+    max-width: 100% !important;
+    height: auto !important;
+
+    margin: 0 0 -8px 0 !important;
+
+    transform: none !important;
+
+    mix-blend-mode: normal !important;
+  }
+
+  /* Description */
+  .auth-visual p {
+    margin: 0 0 20px 0 !important;
+    line-height: 1.65 !important;
+  }
+
+  /* Benefits */
+  .auth-visual ul {
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .auth-visual li {
+    margin-bottom: 14px !important;
+  }
+
+  /* RIGHT SIDE */
+  .auth-form-side {
+    width: 100% !important;
+    height: 100vh !important;
+
+    display: flex !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    padding: 32px 45px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .auth-form-side::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+  }
+
+  .auth-form-side .auth-card {
+    width: 100% !important;
+    max-width: 460px !important;
+
+    transform: none !important;
+
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  /* Login card centered vertically */
+  .auth-form-side:has(#loginForm) {
+    align-items: center !important;
+  }
+
+  /* Register card starts at top and scrolls */
+  .auth-form-side:has(#registerForm) {
+    align-items: flex-start !important;
+  }
+}
+
+/* Final small left-section centering */
+@media (min-width: 900px) {
+  .auth-visual {
+    transform: translateX(35px) !important;
+  }
+}
+
+/* Move only the left content toward the center */
+@media (min-width: 900px) {
+  .auth-visual .auth-hero-logo,
+  .auth-visual p,
+  .auth-visual ul {
+    position: relative !important;
+    left: 55px !important;
+  }
+}
+
+/* Blend the logo's dark PNG background into the site */
+@media (min-width: 900px) {
+  .auth-visual .auth-hero-logo {
+    mix-blend-mode: lighten !important;
+  }
+}
+
+/* Final micro-adjustments */
+@media (min-width: 900px) {
+
+  .auth-visual .auth-hero-logo {
+    margin-bottom: 8px !important;
+    transform: translateX(8px) !important;
+    mix-blend-mode: lighten !important;
+  }
+
+  .auth-visual p,
+  .auth-visual ul {
+    transform: translateX(8px) !important;
+  }
+}
+
+/* Align logo with the start of the left content */
+@media (min-width: 900px) {
+  .auth-visual .auth-hero-logo {
+    align-self: flex-start !important;
+    margin-left: 0 !important;
+    transform: translateX(8px) !important;
+  }
+}
+
+/* Restore TenancyHub logo brightness */
+@media (min-width: 900px) {
+  .auth-visual .auth-hero-logo {
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+    filter:
+      brightness(1.25)
+      saturate(1.35)
+      contrast(1.08)
+      drop-shadow(0 0 10px rgba(0, 180, 255, 0.28)) !important;
+  }
+}
+
+/* Enlarge the TenancyHub logo */
+@media (min-width: 900px) {
+  .auth-visual .auth-hero-logo {
+    width: 500px !important;
+    max-width: none !important;
+    transform: scale(1.12) !important;
+    transform-origin: left center !important;
+    margin-bottom: 12px !important;
+  }
+}
+
+/* Final logo size and brightness correction */
+@media (min-width: 900px) {
+  .auth-visual .auth-hero-logo {
+    width: 435px !important;
+    max-width: 100% !important;
+
+    transform: none !important;
+
+    margin-bottom: 8px !important;
+
+    mix-blend-mode: normal !important;
+
+    opacity: 1 !important;
+
+    filter:
+      brightness(1.28)
+      saturate(1.45)
+      contrast(1.12)
+      drop-shadow(0 0 8px rgba(0, 190, 255, 0.22)) !important;
+  }
+}
+
+/* Brighten TenancyHub logo without changing its size */
+@media (min-width: 900px) {
+  .auth-visual .auth-hero-logo {
+    width: 435px !important;
+    opacity: 1 !important;
+    mix-blend-mode: normal !important;
+
+    filter:
+      brightness(1.55)
+      saturate(1.7)
+      contrast(1.18)
+      drop-shadow(0 0 12px rgba(0, 190, 255, 0.38))
+      drop-shadow(0 0 24px rgba(0, 110, 255, 0.18)) !important;
+  }
+}

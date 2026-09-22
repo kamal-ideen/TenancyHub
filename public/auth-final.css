@@ -1,0 +1,428 @@
+/* ==========================================
+   TENANCYHUB LOGIN + REGISTER FINAL THEME
+   ========================================== */
+
+html,
+body {
+  margin: 0 !important;
+  width: 100% !important;
+  min-height: 100% !important;
+  background: #03132d !important;
+}
+
+@media (min-width: 900px) {
+
+  body {
+    height: 100vh !important;
+    overflow: hidden !important;
+  }
+
+  /* Full-width page */
+  .auth-shell {
+    position: relative !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+
+    width: 100vw !important;
+    height: 100vh !important;
+    min-height: 100vh !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+    gap: 0 !important;
+
+    overflow: hidden !important;
+
+    background:
+      radial-gradient(
+        circle at 4% 50%,
+        rgba(0, 98, 255, .22),
+        transparent 36%
+      ),
+      radial-gradient(
+        circle at 97% 4%,
+        rgba(0, 195, 255, .18),
+        transparent 30%
+      ),
+      linear-gradient(
+        135deg,
+        #061633 0%,
+        #061b40 48%,
+        #020b18 100%
+      ) !important;
+  }
+
+  /* ==================================
+     LEFT SIDE
+     ================================== */
+
+  .auth-visual {
+    width: 100% !important;
+    height: 100vh !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+
+    justify-content: center !important;
+    align-items: flex-start !important;
+
+    box-sizing: border-box !important;
+
+    padding: 40px 55px 40px 8vw !important;
+
+    background: transparent !important;
+
+    text-align: left !important;
+  }
+
+  .auth-visual .auth-hero-logo {
+    display: block !important;
+
+    width: 440px !important;
+    max-width: 100% !important;
+    height: auto !important;
+
+    margin: 0 0 14px 0 !important;
+    padding: 0 !important;
+
+    align-self: flex-start !important;
+
+    transform: none !important;
+
+    mix-blend-mode: normal !important;
+    opacity: 1 !important;
+
+    filter:
+      brightness(1.35)
+      saturate(1.45)
+      contrast(1.1)
+      drop-shadow(0 0 10px rgba(0, 190, 255, .22)) !important;
+  }
+
+  .auth-visual p {
+    width: 100% !important;
+    max-width: 500px !important;
+
+    margin: 0 0 22px 0 !important;
+    padding: 0 !important;
+
+    line-height: 1.65 !important;
+
+    color: #eef6ff !important;
+  }
+
+  .auth-visual ul {
+    width: 100% !important;
+    max-width: 500px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    list-style: none !important;
+  }
+
+  .auth-visual li {
+    display: flex !important;
+    align-items: center !important;
+
+    margin: 0 0 14px 0 !important;
+    padding: 0 !important;
+
+    color: #eef6ff !important;
+  }
+
+  .auth-visual li:last-child {
+    margin-bottom: 0 !important;
+  }
+
+  .auth-visual .check {
+    flex: 0 0 auto !important;
+    margin-right: 11px !important;
+
+    background: linear-gradient(
+      135deg,
+      #087aff,
+      #05c9e7
+    ) !important;
+
+    color: #fff !important;
+
+    box-shadow:
+      0 0 12px rgba(0, 180, 255, .16) !important;
+  }
+
+  /* ==================================
+     RIGHT SIDE
+     ================================== */
+
+  .auth-form-side {
+    width: 100% !important;
+    height: 100vh !important;
+
+    min-height: 0 !important;
+
+    display: flex !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    padding: 32px 6vw 32px 35px !important;
+
+    background: transparent !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
+  }
+
+  .auth-form-side::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .auth-form-side .auth-card {
+    width: 100% !important;
+    max-width: 460px !important;
+
+    flex: 0 0 auto !important;
+
+    margin: 0 auto 32px auto !important;
+    padding: 34px 28px !important;
+
+    box-sizing: border-box !important;
+
+    background:
+      linear-gradient(
+        145deg,
+        rgba(7, 28, 59, .94),
+        rgba(2, 13, 31, .97)
+      ) !important;
+
+    border: 1px solid rgba(0, 180, 255, .72) !important;
+
+    border-radius: 20px !important;
+
+    box-shadow:
+      0 0 25px rgba(0, 125, 255, .16),
+      inset 0 0 30px rgba(0, 150, 255, .04) !important;
+
+    backdrop-filter: blur(14px) !important;
+
+    color: #f2f7ff !important;
+  }
+
+  /* Login centered */
+  .auth-form-side:has(#loginForm) {
+    align-items: center !important;
+  }
+
+  .auth-form-side:has(#loginForm) .auth-card {
+    margin: 0 auto !important;
+  }
+
+  /* Register starts at top and scrolls */
+  .auth-form-side:has(#registerForm) {
+    align-items: flex-start !important;
+  }
+
+  /* ==================================
+     INPUTS
+     ================================== */
+
+  .auth-card input,
+  .auth-card select {
+    width: 100% !important;
+
+    background: #06172f !important;
+    color: #f6fbff !important;
+
+    border: 1px solid #24527e !important;
+    border-radius: 10px !important;
+
+    box-sizing: border-box !important;
+  }
+
+  .auth-card input:focus,
+  .auth-card select:focus {
+    outline: none !important;
+
+    border-color: #0bc8ff !important;
+
+    box-shadow:
+      0 0 0 3px rgba(11, 200, 255, .12),
+      0 0 16px rgba(0, 148, 255, .12) !important;
+  }
+
+  /* ==================================
+     BUTTONS
+     ================================== */
+
+  .auth-card .btn-primary {
+    width: 100% !important;
+
+    background:
+      linear-gradient(
+        100deg,
+        #1168ff,
+        #078ff4,
+        #08c7d8
+      ) !important;
+
+    color: #fff !important;
+
+    border: none !important;
+    border-radius: 10px !important;
+
+    box-shadow:
+      0 8px 24px rgba(0, 150, 255, .18) !important;
+  }
+
+  .auth-card a,
+  .auth-card .forgot-link {
+    color: #16c5ff !important;
+  }
+}
+
+/* ==========================================
+   MOBILE
+   ========================================== */
+
+@media (max-width: 899px) {
+
+  body {
+    overflow-x: hidden !important;
+  }
+
+  .auth-shell {
+    display: flex !important;
+    flex-direction: column !important;
+
+    width: 100% !important;
+    min-height: 100vh !important;
+    height: auto !important;
+
+    overflow: visible !important;
+  }
+
+  .auth-visual {
+    width: 100% !important;
+    min-height: 360px !important;
+
+    padding: 48px 24px !important;
+
+    justify-content: center !important;
+    align-items: flex-start !important;
+  }
+
+  .auth-visual .auth-hero-logo {
+    width: 390px !important;
+    max-width: 100% !important;
+
+    margin-bottom: 14px !important;
+  }
+
+  .auth-form-side {
+    width: 100% !important;
+    height: auto !important;
+
+    padding: 24px 16px !important;
+
+    overflow: visible !important;
+  }
+
+  .auth-form-side .auth-card {
+    width: 100% !important;
+    max-width: 480px !important;
+    margin: 0 auto 24px !important;
+  }
+}
+
+/* ==========================================
+   TENANCYHUB UNIFIED BUTTON + ICON COLORS
+   ========================================== */
+
+/* Primary buttons on BOTH login and register */
+.auth-card .btn-primary {
+  background: linear-gradient(
+    100deg,
+    #1268ff 0%,
+    #078ff5 48%,
+    #08c7e5 100%
+  ) !important;
+
+  color: #ffffff !important;
+  border: none !important;
+
+  box-shadow:
+    0 8px 24px rgba(8, 151, 255, 0.22) !important;
+
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    box-shadow 0.2s ease !important;
+}
+
+.auth-card .btn-primary:hover {
+  filter: brightness(1.08) !important;
+  transform: translateY(-1px) !important;
+
+  box-shadow:
+    0 10px 28px rgba(8, 190, 255, 0.30) !important;
+}
+
+/* Check icons on BOTH pages */
+.auth-visual .check {
+  background: linear-gradient(
+    135deg,
+    #1268ff 0%,
+    #08c7e5 100%
+  ) !important;
+
+  color: #ffffff !important;
+
+  box-shadow:
+    0 0 14px rgba(8, 190, 255, 0.22) !important;
+}
+
+/* Links */
+.auth-card a,
+.auth-card .forgot-link {
+  color: #19c8ff !important;
+}
+
+/* Form focus */
+.auth-card input:focus,
+.auth-card select:focus {
+  border-color: #08c7e5 !important;
+
+  box-shadow:
+    0 0 0 3px rgba(8, 199, 229, 0.12),
+    0 0 16px rgba(0, 160, 255, 0.12) !important;
+}
+
+/* Step 1 active circle on register */
+.auth-steps .auth-step.active .dot {
+  background: #1268ff !important;
+  color: #ffffff !important;
+}
+
+/* Active step text */
+.auth-steps .auth-step.active {
+  color: #19c8ff !important;
+}
+
+/* Center the shorter authentication pages */
+@media (min-width: 900px) {
+  body:has(#forgotForm) .auth-form-side,
+  body:has(#resetForm) .auth-form-side,
+  body:has(#verifyForm) .auth-form-side {
+    align-items: center !important;
+  }
+
+  body:has(#forgotForm) .auth-form-side .auth-card,
+  body:has(#resetForm) .auth-form-side .auth-card,
+  body:has(#verifyForm) .auth-form-side .auth-card {
+    margin: 0 auto !important;
+  }
+}
